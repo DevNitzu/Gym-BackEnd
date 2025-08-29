@@ -15,7 +15,7 @@ class ClienteRepositoryImpl(ClienteRepository):
         return db_cliente
 
     async def get_by_id(self, id_cliente: int) -> Optional[Cliente]:
-        return self.db.query(Cliente).filter(Cliente.id_cliente == id_cliente).first()
+        return self.db.query(Cliente).filter(Cliente.id_cliente == id_cliente, Cliente.estado == 1).first()
 
     async def get_by_email(self, email: str) -> Optional[Cliente]:
         return self.db.query(Cliente).filter(Cliente.email == email).first()
@@ -24,7 +24,7 @@ class ClienteRepositoryImpl(ClienteRepository):
         return self.db.query(Cliente).filter(Cliente.cedula == cedula).first()
 
     async def update(self, id_cliente: int, cliente_data: dict) -> Optional[Cliente]:
-        db_cliente = self.db.query(Cliente).filter(Cliente.id_cliente == id_cliente).first()
+        db_cliente = self.db.query(Cliente).filter(Cliente.id_cliente == id_cliente, Cliente.estado == 1).first()
         if db_cliente:
             for key, value in cliente_data.items():
                 setattr(db_cliente, key, value)
@@ -33,12 +33,12 @@ class ClienteRepositoryImpl(ClienteRepository):
         return db_cliente
 
     async def delete(self, id_cliente: int) -> bool:
-        db_cliente = self.db.query(Cliente).filter(Cliente.id_cliente == id_cliente).first()
+        db_cliente = self.db.query(Cliente).filter(Cliente.id_cliente == id_cliente, Cliente.estado == 1).first()
         if db_cliente:
-            self.db.delete(db_cliente)
+            db_cliente.estado = 0
             self.db.commit()
             return True
         return False
 
     async def get_all(self) -> List[Cliente]:
-        return self.db.query(Cliente).all()
+        return self.db.query(Cliente).filter(Cliente.estado == 1).all()

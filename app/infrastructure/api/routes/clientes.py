@@ -15,7 +15,7 @@ def get_cliente_service(db: Session = Depends(get_db)) -> ClienteService:
     cliente_repository = ClienteRepositoryImpl(db)
     return ClienteService(cliente_repository)
 
-@router.post("/auth", response_model=Token)
+@router.post("/clientes/auth", response_model=Token)
 @public_endpoint
 async def login(
     request: Request,

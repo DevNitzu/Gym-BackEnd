@@ -27,14 +27,11 @@ class ClienteService:
 
     async def authenticate_cliente(self, login_data: LoginRequest):
         cliente = await self.cliente_repository.get_by_email(login_data.email)
-        if not cliente:
-            raise ValueError("Invalid credentials")
-        
-        if not verify_password(login_data.contrasenia, cliente.contrasenia):
-            raise ValueError("Invalid credentials password")
+        if not cliente or not verify_password(login_data.contrasenia, cliente.contrasenia):
+            raise ValueError("Credenciales inválidas")
 
         if not cliente.estado:
-            raise ValueError("Account is disabled")
+            raise ValueError("Cuenta inhabilitada")
         
         access_token = create_access_token(
             data={"sub": cliente.email},
