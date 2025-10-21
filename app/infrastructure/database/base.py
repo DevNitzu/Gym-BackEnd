@@ -1,16 +1,20 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
+from sqlalchemy.orm import declarative_base
 from app.core.config import settings
 
-engine = create_engine(settings.database_url, pool_pre_ping=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# 🚀 Cambiar la URL para async
+async_database_url = settings.database_url.replace("mysql+pymysql://", "mysql+aiomysql://")
 
+# Crear engine async
+engine = create_async_engine(async_database_url, echo=True)
+
+# Async session maker
+AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False)
+
+# Base
 Base = declarative_base()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# Dependencia FastAPI
+async def get_db() -> AsyncSession:
+    async with AsyncSessionLocal() as session:
+        yield session

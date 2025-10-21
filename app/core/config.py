@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 class Settings(BaseSettings):
     # Database
     mysql_host: str
-    mysql_port: int = 3306
+    mysql_port: int = 3307
     mysql_db: str
     mysql_user: str
     mysql_password: str
