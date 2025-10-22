@@ -1,6 +1,6 @@
 from fastapi import FastAPI,HTTPException
 from app.core.config import settings
-from app.infrastructure.api.routes import clientes,modulos, empresas
+from app.infrastructure.api.routes import clientes,modulos, empresas,gimnasios,tipos_empleado,empleados
 from app.infrastructure.database.base import Base, engine
 from app.core.rate_limiter import init_rate_limiter
 from sqlalchemy import text
@@ -29,6 +29,9 @@ def check_db_connection():
 app.include_router(clientes.router, prefix="/api/v1", tags=["clientes"])
 app.include_router(modulos.router, prefix="/api/v1", tags=["modulos"])
 app.include_router(empresas.router, prefix="/api/v1", tags=["empresas"])
+app.include_router(gimnasios.router, prefix="/api/v1", tags=["gimnasios"])
+app.include_router(tipos_empleado.router, prefix="/api/v1", tags=["tipos_empleado"])
+app.include_router(empleados.router, prefix="/api/v1", tags=["empleados"])
 
 @app.get("/")
 async def root():

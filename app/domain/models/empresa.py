@@ -7,7 +7,7 @@ class Empresa(Base):
     id_empresa = Column(Integer, primary_key=True, index=True, autoincrement=True)
     nombre = Column(String(100), nullable=False)
     ruc = Column(String(100), nullable=False)
-    direccion = Column(String(100), nullable=False)
+    direccion = Column(String(200), nullable=False)
     telefono = Column(String(100), nullable=False)
     correo = Column(String(100), nullable=False)
     activo = Column(Boolean, default=True)
