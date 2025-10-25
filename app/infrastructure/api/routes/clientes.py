@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.database.base import get_db
 from app.application.services.cliente_service import ClienteService
 from app.infrastructure.database.repositories.cliente_repository_impl import ClienteRepositoryImpl
@@ -11,7 +11,7 @@ from typing import List
 
 router = APIRouter()
 
-def get_cliente_service(db: Session = Depends(get_db)) -> ClienteService:
+def get_cliente_service(db: AsyncSession = Depends(get_db)) -> ClienteService:
     cliente_repository = ClienteRepositoryImpl(db)
     return ClienteService(cliente_repository)
 
@@ -69,7 +69,7 @@ async def update_cliente(
 ):
     cliente = await cliente_service.update_cliente(id_cliente, cliente_data)
     if not cliente:
-        raise HTTPException(status_code=404, detail="Cliente no encnontrado")
+        raise HTTPException(status_code=404, detail="Cliente no encontrado")
     return cliente
 
 @router.delete("/clientes/{id_cliente}")

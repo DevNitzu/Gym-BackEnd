@@ -12,14 +12,6 @@ class ClienteRepository(ABC):
         pass
     
     @abstractmethod
-    async def get_by_email(self, email: str) -> Optional[Cliente]:
-        pass
-    
-    @abstractmethod
-    async def get_by_cedula(self, cedula: str) -> Optional[Cliente]:
-        pass
-    
-    @abstractmethod
     async def update(self, id_cliente: int, cliente_data: dict) -> Optional[Cliente]:
         pass
     
@@ -29,4 +21,12 @@ class ClienteRepository(ABC):
     
     @abstractmethod
     async def get_all(self) -> List[Cliente]:
+        pass
+
+    @abstractmethod
+    async def get_by_correo(self, email: str) -> Optional[Cliente]:
+        pass
+    
+    @abstractmethod
+    async def get_by_cedula(self, cedula: str) -> Optional[Cliente]:
         pass
