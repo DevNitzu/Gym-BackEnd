@@ -45,6 +45,18 @@ class EmpleadoRepositoryImpl(EmpleadoRepository):
         )
         return result.scalars().all()
     
+    async def get_all_by_empresa(self, id_empresa: int) -> List[Empleado]:
+        result = await self.db.execute(
+            select(Empleado).where(Empleado.activo == True, Empleado.id_empresa == id_empresa)
+        )
+        return result.scalars().all()
+
+    async def get_all_by_gimnasio(self, id_gimnasio: int) -> List[Empleado]:
+        result = await self.db.execute(
+            select(Empleado).where(Empleado.activo == True, Empleado.id_gimnasio == id_gimnasio)
+        )
+        return result.scalars().all()
+
     async def get_by_correo(self, correo: str) -> Optional[Empleado]:
         query = select(Empleado).where(Empleado.correo == correo)
         result = await self.db.execute(query)

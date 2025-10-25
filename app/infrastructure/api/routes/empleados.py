@@ -47,6 +47,24 @@ async def get_all_empleados(
 ):
     return await empleado_service.get_all_empleados()
 
+@router.get("/empleados/{id_empresa}", response_model=List[EmpleadoResponse])
+@private_endpoint
+async def get_all_empleados_by_empresa(
+    request: Request,
+    id_empresa: int,
+    empleado_service: EmpleadoService = Depends(get_empleado_service)
+):
+    return await empleado_service.get_all_empleados_by_empresa(id_empresa)
+
+@router.get("/empleados/{id_gimnasio}", response_model=List[EmpleadoResponse])
+@private_endpoint
+async def get_all_empleados_by_gimnasio(
+    request: Request,
+    id_gimnasio: int,
+    empleado_service: EmpleadoService = Depends(get_empleado_service)
+):
+    return await empleado_service.get_all_empleados_by_gimnasio(id_gimnasio)
+
 @router.get("/empleados/{id_empleado}", response_model=EmpleadoResponse)
 @private_endpoint
 async def get_empleado(
