@@ -28,7 +28,7 @@ async def login(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.post("/empleados", response_model=EmpleadoResponse)
-@public_endpoint
+@private_endpoint
 async def create_empleado(
     request: Request,
     empleado_data: EmpleadoCreate,
@@ -47,7 +47,7 @@ async def get_all_empleados(
 ):
     return await empleado_service.get_all_empleados()
 
-@router.get("/empleados/{id_empresa}", response_model=List[EmpleadoResponse])
+@router.get("/empleados/empresa/{id_empresa}", response_model=List[EmpleadoResponse])
 @private_endpoint
 async def get_all_empleados_by_empresa(
     request: Request,
@@ -56,7 +56,7 @@ async def get_all_empleados_by_empresa(
 ):
     return await empleado_service.get_all_empleados_by_empresa(id_empresa)
 
-@router.get("/empleados/{id_gimnasio}", response_model=List[EmpleadoResponse])
+@router.get("/empleados/gimnasio/{id_gimnasio}", response_model=List[EmpleadoResponse])
 @private_endpoint
 async def get_all_empleados_by_gimnasio(
     request: Request,
