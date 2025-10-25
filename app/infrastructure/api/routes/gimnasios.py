@@ -26,13 +26,14 @@ async def create_gimnasio(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/gimnasios", response_model=List[GimnasioResponse])
+@router.get("/gimnasios/{id_empresa}", response_model=List[GimnasioResponse])
 @public_endpoint
 async def get_all_gimnasios(
     request: Request,
+    id_empresa: int,
     gimnasio_service: GimnasioService = Depends(get_gimnasio_service)
 ):
-    return await gimnasio_service.get_all_gimnasios()
+    return await gimnasio_service.get_all_gimnasios(id_empresa)
 
 @router.get("/gimnasios/{id_gimnasio}", response_model=GimnasioResponse)
 @public_endpoint

@@ -30,6 +30,6 @@ class GimnasioService:
             return None
         return GimnasioInDB.model_validate(gimnasio_db)
 
-    async def get_all_gimnasios(self) -> List[GimnasioInDB]:
-        gimnasios_db = await self.gimnasio_repository.get_all()
+    async def get_all_gimnasios(self, id_empresa: int) -> List[GimnasioInDB]:
+        gimnasios_db = await self.gimnasio_repository.get_all(id_empresa)
         return [GimnasioInDB.model_validate(m) for m in gimnasios_db]

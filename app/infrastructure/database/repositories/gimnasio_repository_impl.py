@@ -39,8 +39,8 @@ class GimnasioRepositoryImpl(GimnasioRepository):
         await self.db.commit()
         return True
 
-    async def get_all(self) -> List[Gimnasio]:
+    async def get_all(self, id_empresa: int) -> List[Gimnasio]:
         result = await self.db.execute(
-            select(Gimnasio).where(Gimnasio.activo == True)
+            select(Gimnasio).where(Gimnasio.activo == True, Gimnasio.id_empresa == id_empresa)
         )
         return result.scalars().all()

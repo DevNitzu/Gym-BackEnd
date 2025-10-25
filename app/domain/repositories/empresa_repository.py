@@ -22,3 +22,7 @@ class EmpresaRepository(ABC):
     @abstractmethod
     async def get_all(self) -> List[Empresa]:
         pass
+
+    @abstractmethod
+    async def get_by_ruc(self, ruc: str) -> Optional[Empresa]:
+        pass
