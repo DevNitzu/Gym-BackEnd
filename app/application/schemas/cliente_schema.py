@@ -7,6 +7,7 @@ class ClienteBase(BaseModel):
     apellido: str = Field(..., min_length=2, max_length=100)
     cedula: str = Field(..., min_length=5, max_length=20)
     correo: EmailStr
+    telefono: str = Field(..., min_length=7, max_length=15)
     fecha_creacion: datetime = Field(default_factory=datetime.utcnow)
 
 class ClienteCreate(ClienteBase):
@@ -17,6 +18,7 @@ class ClienteUpdate(BaseModel):
     apellido: Optional[str] = Field(None, min_length=2, max_length=100)
     cedula: Optional[str] = Field(None, min_length=5, max_length=20)
     correo: Optional[EmailStr] = None
+    telefono: Optional[str] = Field(..., min_length=7, max_length=15)
     contrasena: Optional[str] = Field(None, min_length=6, max_length=100)
     fecha_creacion: Optional[datetime] = None
 
