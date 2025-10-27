@@ -20,5 +20,5 @@ class GimnasioRepository(ABC):
         pass
     
     @abstractmethod
-    async def get_all(self) -> List[Gimnasio]:
+    async def get_all(self, id_empresa: int) -> List[Gimnasio]:
         pass

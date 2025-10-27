@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from app.core.config import settings
-from app.infrastructure.api.routes import clientes, modulos, empresas, gimnasios, tipos_empleado, empleados
+from app.infrastructure.api.routes import clientes, modulos, empresas, gimnasios, tipos_empleado, empleados, horarios_gimnasio
 from app.core.base import Base, engine
 from app.core.rate_limiter import init_rate_limiter
 from app.core.cloudinary_init import init_cloudinary
@@ -56,6 +56,7 @@ app.include_router(empresas.router, prefix="/api/v1", tags=["empresas"])
 app.include_router(gimnasios.router, prefix="/api/v1", tags=["gimnasios"])
 app.include_router(tipos_empleado.router, prefix="/api/v1", tags=["tipos_empleado"])
 app.include_router(empleados.router, prefix="/api/v1", tags=["empleados"])
+app.include_router(horarios_gimnasio.router, prefix="/api/v1", tags=["horarios_gimnasio"])
 
 # Endpoint raíz
 @app.get("/")
