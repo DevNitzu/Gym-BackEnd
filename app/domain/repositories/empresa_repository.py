@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from app.domain.models.empresa import Empresa
 from typing import Optional, List
+from fastapi import UploadFile
 
 class EmpresaRepository(ABC):
     @abstractmethod
@@ -25,4 +26,8 @@ class EmpresaRepository(ABC):
 
     @abstractmethod
     async def get_by_ruc(self, ruc: str) -> Optional[Empresa]:
+        pass
+
+    @abstractmethod
+    async def update_logo(self, id_empresa: int, logo_file: UploadFile) -> Optional[Empresa]:
         pass

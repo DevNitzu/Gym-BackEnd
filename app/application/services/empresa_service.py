@@ -39,3 +39,20 @@ class EmpresaService:
     async def get_all_empresas(self) -> List[EmpresaInDB]:
         empresas_db = await self.empresa_repository.get_all()
         return [EmpresaInDB.model_validate(m) for m in empresas_db]
+    
+    async def update_empresa_logo(self, id_empresa: int, logo_file) -> Optional[EmpresaInDB]:
+        empresa_db = await self.empresa_repository.update_logo(id_empresa, logo_file)
+        if not empresa_db:
+            return None
+
+        return EmpresaInDB.model_validate({
+            "id_empresa": empresa_db.id_empresa,
+            "nombre": empresa_db.nombre,
+            "ruc": empresa_db.ruc,
+            "direccion": empresa_db.direccion,
+            "telefono": empresa_db.telefono,
+            "correo": empresa_db.correo,
+            "fecha_creacion": empresa_db.fecha_creacion,
+            "activo": empresa_db.activo,
+            "logo_url": empresa_db.logo_url
+        })

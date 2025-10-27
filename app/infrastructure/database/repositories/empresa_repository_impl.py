@@ -3,6 +3,7 @@ from sqlalchemy import select
 from app.domain.models.empresa import Empresa
 from typing import Optional, List
 from app.domain.repositories.empresa_repository import EmpresaRepository
+from cloudinary.uploader import upload
 
 class EmpresaRepositoryImpl(EmpresaRepository):
     def __init__(self, db: AsyncSession):
@@ -51,4 +52,23 @@ class EmpresaRepositoryImpl(EmpresaRepository):
         result = await self.db.execute(query)
         empresa = result.scalars().first()
 
+        return empresa
+
+    async def update_logo(self, id_empresa: int, logo_file) -> Optional[Empresa]:
+        empresa = await self.get_by_id(id_empresa)
+        if not empresa or not logo_file:
+            return None
+
+        # Subir a Cloudinary
+        result = upload(
+            logo_file.file,
+            folder="empresas/logos",
+            public_id=f"empresa_{empresa.id_empresa}",
+            overwrite=True
+        )
+
+        # Guardar URL en la base de datos
+        empresa.logo_url = result.get("secure_url")
+        await self.db.commit()
+        await self.db.refresh(empresa)
         return empresa

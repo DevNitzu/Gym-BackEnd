@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile, File
 from app.application.services.empresa_service import EmpresaService
 from app.infrastructure.database.repositories.empresa_repository_impl import EmpresaRepositoryImpl
 from app.core.base import get_db
@@ -73,3 +73,14 @@ async def delete_empresa(
     if not success:
         raise HTTPException(status_code=404, detail="Empresa no encontrado")
     return {"message": "Empresa eliminada exitosamente"}
+
+@router.put("/empresas/logo/{id_empresa}", response_model=EmpresaResponse)
+async def update_empresa_logo(
+    id_empresa: int,
+    logo_file: UploadFile = File(...),
+    empresa_service: EmpresaService = Depends(get_empresa_service)
+):
+    empresa = await empresa_service.update_empresa_logo(id_empresa, logo_file)
+    if not empresa:
+        raise HTTPException(status_code=404, detail="Empresa no encontrada")
+    return empresa

@@ -49,7 +49,6 @@ class EmpresaUpdate(BaseModel):
             raise ValueError("El teléfono debe contener solo números")
         return v
 
-
 class EmpresaInDB(EmpresaBase):
     id_empresa: int
     logo_url: Optional[str] = None
