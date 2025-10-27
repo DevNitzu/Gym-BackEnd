@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from app.application.services.gimnasio_service import GimnasioService
 from app.infrastructure.database.repositories.gimnasio_repository_impl import GimnasioRepositoryImpl
-from app.infrastructure.database.base import get_db
+from app.core.base import get_db
 from app.application.schemas.gimnasio_schema import GimnasioBase, GimnasioUpdate, GimnasioResponse
 from app.core.decorators import public_endpoint, private_endpoint
 from typing import List

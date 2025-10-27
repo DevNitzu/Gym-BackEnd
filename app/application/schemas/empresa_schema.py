@@ -52,10 +52,13 @@ class EmpresaUpdate(BaseModel):
 
 class EmpresaInDB(EmpresaBase):
     id_empresa: int
-
+    logo_url: Optional[str] = None
+    
     class Config:
         from_attributes = True
 
 
 class EmpresaResponse(EmpresaInDB):
     pass
+
+

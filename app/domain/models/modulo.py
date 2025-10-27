@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
-from app.infrastructure.database.base import Base
+from app.core.base import Base
 
 class Modulo(Base):
     __tablename__ = "modulos"

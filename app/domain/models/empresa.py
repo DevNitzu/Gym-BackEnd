@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean,TIMESTAMP, func
-from app.infrastructure.database.base import Base
+from app.core.base import Base
 
 class Empresa(Base):
     __tablename__ = "empresas"
@@ -12,3 +12,4 @@ class Empresa(Base):
     correo = Column(String(100), nullable=False)
     activo = Column(Boolean, default=True)
     fecha_creacion = Column(TIMESTAMP, server_default=func.now(), nullable=False)
+    logo_url = Column(String(200), nullable=True)

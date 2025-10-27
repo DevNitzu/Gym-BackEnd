@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.infrastructure.database.base import get_db
+from app.core.base import get_db
 from app.application.services.cliente_service import ClienteService
 from app.infrastructure.database.repositories.cliente_repository_impl import ClienteRepositoryImpl
 from app.application.schemas.cliente_schema import (

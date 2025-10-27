@@ -3,8 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from app.core.config import settings
 from app.infrastructure.api.routes import clientes, modulos, empresas, gimnasios, tipos_empleado, empleados
-from app.infrastructure.database.base import Base, engine
+from app.core.base import Base, engine
 from app.core.rate_limiter import init_rate_limiter
+from app.core.cloudinary_init import init_cloudinary
 
 # Crear la app
 app = FastAPI(
@@ -46,6 +47,8 @@ def check_db_connection():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection error: {str(e)}")
 
+# Cloudinary inicializacion
+init_cloudinary()
 # Rutas de la API
 app.include_router(clientes.router, prefix="/api/v1", tags=["clientes"])
 app.include_router(modulos.router, prefix="/api/v1", tags=["modulos"])

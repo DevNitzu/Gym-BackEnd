@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from app.application.services.modulo_service import ModuloService
 from app.infrastructure.database.repositories.modulo_repository_impl import ModuloRepositoryImpl
-from app.infrastructure.database.base import get_db
+from app.core.base import get_db
 from app.application.schemas.modulo_schema import ModuloBase, ModuloUpdate, ModuloResponse
 from app.core.decorators import public_endpoint, private_endpoint
 from typing import List

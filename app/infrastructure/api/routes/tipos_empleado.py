@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from app.application.services.tipo_empleado_service import TipoEmpleadoService
 from app.infrastructure.database.repositories.tipo_empleado_repository_impl import TipoEmpleadoRepositoryImpl
-from app.infrastructure.database.base import get_db
+from app.core.base import get_db
 from app.application.schemas.tipo_empleado_schema import TipoEmpleadoBase, TipoEmpleadoUpdate, TipoEmpleadoResponse
 from app.core.decorators import public_endpoint, private_endpoint
 from typing import List
