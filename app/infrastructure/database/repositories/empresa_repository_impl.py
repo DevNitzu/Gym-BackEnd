@@ -3,7 +3,6 @@ from sqlalchemy import select
 from app.domain.models.empresa import Empresa
 from typing import Optional, List
 from app.domain.repositories.empresa_repository import EmpresaRepository
-from cloudinary.uploader import upload
 
 class EmpresaRepositoryImpl(EmpresaRepository):
     def __init__(self, db: AsyncSession):
@@ -26,14 +25,8 @@ class EmpresaRepositoryImpl(EmpresaRepository):
         empresa = await self.get_by_id(id_empresa)
         if not empresa:
             return None
-        
-        '''if logo_file:
-            result = upload(logo_file.file, folder="empresas_logos")
-            empresa_data["logo_url"] = result.get("secure_url")'''
-
         for key, value in empresa_data.items():
             setattr(empresa, key, value)
-
         await self.db.commit()
         await self.db.refresh(empresa)
         return empresa
@@ -51,9 +44,11 @@ class EmpresaRepositoryImpl(EmpresaRepository):
             select(Empresa).where(Empresa.activo == True)
         )
         return result.scalars().all()
+    
 
     async def get_by_ruc(self, ruc: str) -> Optional[Empresa]:
         query = select(Empresa).where(Empresa.ruc == ruc)
         result = await self.db.execute(query)
         empresa = result.scalars().first()
+
         return empresa

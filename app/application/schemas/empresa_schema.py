@@ -6,7 +6,7 @@ class EmpresaBase(BaseModel):
     nombre: str = Field(..., min_length=2, max_length=100)
     ruc: str = Field(..., min_length=10, max_length=13)
     direccion: str = Field(..., min_length=2, max_length=200)
-    telefono: str = Field(..., min_length=7, max_length=15)
+    telefono: str = Field(..., min_length=7, max_length=20)
     correo: EmailStr = Field(...)
     fecha_creacion: datetime = Field(default_factory=datetime.utcnow)
     activo: bool = Field(default=True)

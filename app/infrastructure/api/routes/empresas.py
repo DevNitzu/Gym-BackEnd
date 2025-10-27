@@ -1,9 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Request, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from app.application.services.empresa_service import EmpresaService
 from app.infrastructure.database.repositories.empresa_repository_impl import EmpresaRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.empresa_schema import EmpresaBase, EmpresaUpdate, EmpresaResponse
-from app.application.helpers.form_wrappers import empresa_update_as_form
 from app.core.decorators import public_endpoint, private_endpoint
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -47,7 +46,6 @@ async def get_empresa(
         raise HTTPException(status_code=404, detail="Empresa no encontrado")
     return empresa
 
-
 @router.put("/empresas/{id_empresa}", response_model=EmpresaResponse)
 @public_endpoint
 async def update_empresa(
@@ -56,10 +54,13 @@ async def update_empresa(
     empresa_data: EmpresaUpdate,
     empresa_service: EmpresaService = Depends(get_empresa_service)
 ):
-    empresa = await empresa_service.update_empresa(id_empresa, empresa_data)
-    if not empresa:
-        raise HTTPException(status_code=404, detail="Empleado no encontrado")
-    return empresa
+    try:
+        empresa = await empresa_service.update_empresa(id_empresa, empresa_data)
+        if not empresa:
+            raise HTTPException(status_code=404, detail="Empresa no encontrado")
+        return empresa
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/empresas/{id_empresa}")
 @public_endpoint
