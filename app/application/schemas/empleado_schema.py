@@ -7,6 +7,7 @@ class EmpleadoBase(BaseModel):
     apellido: str = Field(..., min_length=2, max_length=100)
     cedula: str = Field(..., min_length=5, max_length=20)
     correo: EmailStr
+    telefono: str = Field(..., min_length=7, max_length=15)
     id_empresa: int
     id_gimnasio: Optional[int] = None
     id_tipo_empleado: Optional[int] = None

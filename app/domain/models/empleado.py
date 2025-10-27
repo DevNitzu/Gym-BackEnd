@@ -13,5 +13,6 @@ class Empleado(Base):
     cedula = Column(String(100), nullable=False)
     correo = Column(String(100), nullable=False)
     contrasena = Column(String(100), nullable=False)
+    telefono = Column(String(100), nullable=False)
     activo = Column(Boolean, default=True)
     fecha_creacion = Column(TIMESTAMP, server_default=func.now(), nullable=False)
