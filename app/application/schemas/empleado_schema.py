@@ -21,6 +21,7 @@ class EmpleadoUpdate(BaseModel):
     apellido: Optional[str] = Field(None, min_length=2, max_length=100)
     cedula: Optional[str] = Field(None, min_length=5, max_length=20)
     correo: Optional[EmailStr] = None
+    telefono: Optional[str] = Field(None, min_length=7, max_length=15)
     id_empresa: Optional[int] = None
     id_gimnasio: Optional[int] = None
     id_tipo_empleado: Optional[int] = None
