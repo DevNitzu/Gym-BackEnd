@@ -22,14 +22,14 @@ class EmpresaRepositoryImpl(EmpresaRepository):
         )
         return result.scalar_one_or_none()
 
-    async def update(self, id_empresa: int, empresa_data: dict, logo_file=None) -> Optional[Empresa]:
+    async def update(self, id_empresa: int, empresa_data: dict) -> Optional[Empresa]:
         empresa = await self.get_by_id(id_empresa)
         if not empresa:
             return None
         
-        if logo_file:
+        '''if logo_file:
             result = upload(logo_file.file, folder="empresas_logos")
-            empresa_data["logo_url"] = result.get("secure_url")
+            empresa_data["logo_url"] = result.get("secure_url")'''
 
         for key, value in empresa_data.items():
             setattr(empresa, key, value)

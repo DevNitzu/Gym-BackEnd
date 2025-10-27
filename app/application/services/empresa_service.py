@@ -16,7 +16,7 @@ class EmpresaService:
 
         return EmpresaInDB.model_validate(empresa_db)
 
-    async def update_empresa(self, id_empresa: int, empresa_data: EmpresaUpdate, logo_file=None) -> Optional[EmpresaInDB]:
+    async def update_empresa(self, id_empresa: int, empresa_data: EmpresaUpdate) -> Optional[EmpresaInDB]:
         existing_ruc = await self.empresa_repository.get_by_ruc(empresa_data.ruc)
         if existing_ruc and existing_ruc.id_empresa != id_empresa:
             raise ValueError("El RUC proporcionado ya está registrado")
@@ -24,7 +24,6 @@ class EmpresaService:
         updated_db = await self.empresa_repository.update(
             id_empresa,
             empresa_data.model_dump(exclude_unset=True),
-            logo_file=logo_file
         )
         if not updated_db:
             return None

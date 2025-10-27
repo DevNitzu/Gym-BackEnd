@@ -53,15 +53,12 @@ async def get_empresa(
 async def update_empresa(
     request: Request,
     id_empresa: int,
-    empresa_data: EmpresaUpdate = Depends(empresa_update_as_form),
-    logo_file: UploadFile | None = File(None),
+    empresa_data: EmpresaUpdate,
     empresa_service: EmpresaService = Depends(get_empresa_service)
 ):
-    empresa = await empresa_service.update_empresa(
-        id_empresa, empresa_data, logo_file=logo_file
-    )
+    empresa = await empresa_service.update_empresa(id_empresa, empresa_data)
     if not empresa:
-        raise HTTPException(status_code=404, detail="Empresa no encontrada")
+        raise HTTPException(status_code=404, detail="Empleado no encontrado")
     return empresa
 
 @router.delete("/empresas/{id_empresa}")
