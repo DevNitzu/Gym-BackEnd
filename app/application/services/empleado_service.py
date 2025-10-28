@@ -58,7 +58,11 @@ class EmpleadoService:
 
         # Si se está actualizando la contraseña, hashearla
         if "contrasena" in update_dict:
-            update_dict["contrasena"] = get_password_hash(update_dict["contrasena"])
+            password_hash = get_password_hash(update_dict["contrasena"])
+            empleado_password = await self.empleado_repository.get_by_id(id_empleado)
+            if empleado_password and verify_password(update_dict["contrasena"], empleado_password.contrasena):
+                raise ValueError("La nueva contraseña no puede ser igual a la anterior")
+            update_dict["contrasena"] = password_hash
 
         empleado_db = await self.empleado_repository.update(id_empleado, update_dict)
         if not empleado_db:

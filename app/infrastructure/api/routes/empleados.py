@@ -78,7 +78,7 @@ async def get_empleado(
     return empleado
 
 @router.put("/empleados/{id_empleado}", response_model=EmpleadoResponse)
-@private_endpoint
+@public_endpoint
 async def update_empleado(
     request: Request,
     id_empleado: int,
