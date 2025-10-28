@@ -26,7 +26,7 @@ async def create_horario_gimnasio(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/horario_gimnasios/{id_gimnasio}", response_model=List[HorarioGimnasioResponse])
+@router.get("/horario_gimnasios/gimnasio/{id_gimnasio}", response_model=List[HorarioGimnasioResponse])
 @public_endpoint
 async def get_all_horario_gimnasios(
     request: Request,
