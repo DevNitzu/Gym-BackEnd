@@ -23,7 +23,6 @@ class MembresiaBase(BaseModel):
     fecha_inicio: Optional[datetime] = Field(None, description="Fecha de inicio de la membresía")
     fecha_expiracion: Optional[datetime] = Field(None, description="Fecha de expiración de la membresía")
     
-    flexible: bool = Field(True, description="Indica si la asistencia es flexible")
     renovable: bool = Field(True, description="Indica si la membresía es renovable")
 
 
@@ -43,7 +42,6 @@ class MembresiaBase(BaseModel):
             descuento = data.get("descuento", 0)
             data["precio_total"] = round(precio_unitario * cantidad * (1 - descuento), 2)
         return data
-
 
 class MembresiaUpdate(BaseModel):
     id_estado_pago: Optional[int] = Field(None, description="ID del nuevo estado de pago")

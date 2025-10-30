@@ -12,7 +12,7 @@ class Membresia(Base):
     
     unidad_duracion = Column(String(15), nullable=False, comment="Unidad de duración: dia, mes, año")
     cantidad_duracion = Column(Integer, nullable=False, comment="Número de unidades de duración (ej. 3 meses, 10 días)")
-    
+
     precio_unitario = Column(Numeric(10,2), nullable=False)
     descuento = Column(Numeric(1,2), default=0)
     precio_total = Column(Numeric(10,2), nullable=False)
@@ -20,6 +20,5 @@ class Membresia(Base):
     fecha_creacion = Column(TIMESTAMP, server_default=func.now(), nullable=False)
     fecha_inicio = Column(Time, nullable=False)
     fecha_expiracion = Column(Time, nullable=False)
-    flexible = Column(Boolean, default=True) # si la asistencia es flexible o no
     renovable = Column(Boolean, default=True) # si la asistencia es flexible o no
     activo = Column(Boolean, default=True) # si ya no esta activa la membresia
