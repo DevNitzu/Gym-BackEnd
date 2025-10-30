@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr, field_validator
 from typing import Optional
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class GimnasioBase(BaseModel):
     id_empresa: int = Field(..., description="ID de la empresa dueña del gimnasio")
@@ -9,7 +10,10 @@ class GimnasioBase(BaseModel):
     telefono: str = Field(..., min_length=7, max_length=15)
     correo: EmailStr = Field(...)
     activo: bool = Field(default=True)
-    fecha_creacion: datetime = Field(default_factory=datetime.utcnow)
+    fecha_creacion: datetime = Field(
+        default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
+        description="Fecha de creación con zona horaria Guayaquil"
+    )
 
     # Validaciones Pydantic V2
     @field_validator("telefono")

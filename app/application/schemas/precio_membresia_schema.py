@@ -1,12 +1,16 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class PrecioMembresiaBase(BaseModel):
     id_gimnasio: int = Field(..., description="ID del gimnasio")
     tipo: str = Field(..., description="Unidad de duración: dia, mes o año")
     precio: float = Field(..., gt=0, description="Precio del plan")
-    fecha_creacion: datetime = Field(default_factory=datetime.utcnow)
+    fecha_creacion: datetime = Field(
+        default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
+        description="Fecha de creación con zona horaria Guayaquil"
+    )
 
     @field_validator("tipo")
     @classmethod

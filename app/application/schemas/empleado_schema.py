@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class EmpleadoBase(BaseModel):
     nombre: str = Field(..., min_length=2, max_length=100)
@@ -11,7 +12,10 @@ class EmpleadoBase(BaseModel):
     id_empresa: int
     id_gimnasio: Optional[int] = None
     id_tipo_empleado: Optional[int] = None
-    fecha_creacion: datetime = Field(default_factory=datetime.utcnow)
+    fecha_creacion: datetime = Field(
+        default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
+        description="Fecha de creación con zona horaria Guayaquil"
+    )
 
 class EmpleadoCreate(EmpleadoBase):
     contrasena: str = Field(..., min_length=6, max_length=100)

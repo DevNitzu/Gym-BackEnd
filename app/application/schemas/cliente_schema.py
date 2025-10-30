@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional
 from datetime import datetime
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class ClienteBase(BaseModel):
     nombre: str = Field(..., min_length=2, max_length=100)
@@ -8,7 +10,10 @@ class ClienteBase(BaseModel):
     cedula: str = Field(..., min_length=5, max_length=20)
     correo: EmailStr
     telefono: str = Field(..., min_length=7, max_length=15)
-    fecha_creacion: datetime = Field(default_factory=datetime.utcnow)
+    fecha_creacion: datetime = Field(
+        default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
+        description="Fecha de creación con zona horaria Guayaquil"
+    )
 
 class ClienteCreate(ClienteBase):
     contrasena: str = Field(..., min_length=6, max_length=100)
