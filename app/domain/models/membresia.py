@@ -6,9 +6,9 @@ class Membresia(Base):
     
     id_membresia = Column(Integer, primary_key=True, index=True, autoincrement=True)
     id_gimnasio = Column(Integer, ForeignKey("gimnasios.id_gimnasio"), nullable=False)
-    id_cliente = Column(Integer, ForeignKey("cliente.id_cliente"), nullable=False)
-    id_metodo_pago = Column(Integer, ForeignKey("metodo_pago.id_metodo_pago"), nullable=False)
-    id_estado_pago = Column(Integer, ForeignKey("estado_pago.id_estado_pago"), nullable=False)
+    id_cliente = Column(Integer, ForeignKey("clientes.id_cliente"), nullable=False)
+    id_metodo_pago = Column(Integer, ForeignKey("metodos_pago.id_metodo_pago"), nullable=False)
+    id_estado_pago = Column(Integer, ForeignKey("estados_pago.id_estado_pago"), nullable=False)
     
     unidad_duracion = Column(String(15), nullable=False, comment="Unidad de duración: dia, mes, año")
     cantidad_duracion = Column(Integer, nullable=False, comment="Número de unidades de duración (ej. 3 meses, 10 días)")
