@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from app.core.config import settings
-from app.infrastructure.api.routes import clientes, modulos, empresas, gimnasios, tipos_empleado, empleados, horarios_gimnasio, precio_membresia, estados_pago, metodo_pago
+from app.infrastructure.api.routes import clientes, modulos, empresas, gimnasios, tipos_empleado, empleados, horarios_gimnasio, precio_membresia, estados_pago, metodo_pago, membresias
 from app.core.base import Base, engine
 from app.core.rate_limiter import init_rate_limiter
 from app.core.cloudinary_init import init_cloudinary
@@ -60,6 +60,7 @@ app.include_router(horarios_gimnasio.router, prefix="/api/v1", tags=["horarios_g
 app.include_router(precio_membresia.router, prefix="/api/v1", tags=["precio_membresia"])
 app.include_router(estados_pago.router, prefix="/api/v1", tags=["estados_pago"])
 app.include_router(metodo_pago.router, prefix="/api/v1", tags=["metodo_pago"])
+app.include_router(membresias.router, prefix="/api/v1", tags=["membresias"])
 # Endpoint raíz
 @app.get("/")
 async def root():
