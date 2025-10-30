@@ -33,15 +33,6 @@ class MembresiaBase(BaseModel):
         if v not in allowed:
             raise ValueError(f"tipo debe ser uno de {allowed}")
         return v
-    
-    @model_validator(mode="before")
-    def calcular_precio_total(cls, data):
-        if not data.get("precio_total") and "precio_unitario" in data:
-            precio_unitario = data["precio_unitario"]
-            cantidad = data.get("cantidad_duracion", 1)
-            descuento = data.get("descuento", 0)
-            data["precio_total"] = round(precio_unitario * cantidad * (1 - descuento), 2)
-        return data
 
 class MembresiaUpdate(BaseModel):
     id_estado_pago: Optional[int] = Field(None, description="ID del nuevo estado de pago")

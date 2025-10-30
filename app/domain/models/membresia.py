@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Numeric, String, TIMESTAMP, Time, ForeignKey,Boolean, func
+from sqlalchemy import Column, Integer, Numeric, String, TIMESTAMP, DateTime, ForeignKey, Boolean, func
 from app.core.base import Base
 
 class Membresia(Base):
@@ -17,8 +17,8 @@ class Membresia(Base):
     descuento = Column(Numeric(1,2), default=0)
     precio_total = Column(Numeric(10,2), nullable=False)
 
-    fecha_creacion = Column(TIMESTAMP, server_default=func.now(), nullable=False)
-    fecha_inicio = Column(Time, nullable=False)
-    fecha_expiracion = Column(Time, nullable=False)
-    renovable = Column(Boolean, default=True) # si la asistencia es flexible o no
-    activo = Column(Boolean, default=True) # si ya no esta activa la membresia
+    fecha_creacion = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False)
+    fecha_inicio = Column(TIMESTAMP(timezone=True), nullable=False)
+    fecha_expiracion = Column(TIMESTAMP(timezone=True), nullable=False)
+    renovable = Column(Boolean, default=True)
+    activo = Column(Boolean, default=True)

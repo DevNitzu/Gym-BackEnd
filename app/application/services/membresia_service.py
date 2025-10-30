@@ -25,7 +25,7 @@ class MembresiaService:
     async def create_membresia(self, membresia_data: MembresiaBase) -> MembresiaInDB:
         membresia_dict = membresia_data.model_dump()
 
-        if not membresia_dict.get("fecha_expiracion"):
+        if not membresia_dict["unidad_duracion"] == "dia" :
             membresia_dict["fecha_expiracion"] = self._calcular_fecha_expiracion(
                 membresia_dict["fecha_inicio"],
                 membresia_dict["unidad_duracion"],
