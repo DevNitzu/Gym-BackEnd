@@ -10,7 +10,7 @@ class TipoEmpleadoUpdate(BaseModel):
     descripcion: Optional[str] = Field(None, min_length=2, max_length=100)
 
 class TipoEmpleadoInDB(TipoEmpleadoBase):
-    id_tipo: int
+    id_tipo_empleado: int
     activo: bool
 
     class Config:

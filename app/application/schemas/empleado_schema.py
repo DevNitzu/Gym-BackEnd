@@ -9,9 +9,6 @@ class EmpleadoBase(BaseModel):
     cedula: str = Field(..., min_length=5, max_length=20)
     correo: EmailStr
     telefono: str = Field(..., min_length=7, max_length=15)
-    id_empresa: int
-    id_gimnasio: Optional[int] = None
-    id_tipo_empleado: Optional[int] = None
     fecha_creacion: datetime = Field(
         default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
         description="Fecha de creación con zona horaria Guayaquil"
@@ -26,9 +23,6 @@ class EmpleadoUpdate(BaseModel):
     cedula: Optional[str] = Field(None, min_length=5, max_length=20)
     correo: Optional[EmailStr] = None
     telefono: Optional[str] = Field(None, min_length=7, max_length=15)
-    id_empresa: Optional[int] = None
-    id_gimnasio: Optional[int] = None
-    id_tipo_empleado: Optional[int] = None
     contrasena: Optional[str] = Field(None, min_length=6, max_length=100)
     activo: Optional[bool] = None
     fecha_creacion: Optional[datetime] = None
