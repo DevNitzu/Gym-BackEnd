@@ -24,14 +24,6 @@ class EmpleadoRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_all_by_empresa(self, ) -> List[Empleado]:
-        pass
-
-    @abstractmethod
-    async def get_all_by_gimnasio(self) -> List[Empleado]:
-        pass
-
-    @abstractmethod
     async def get_by_correo(self, email: str) -> Optional[Empleado]:
         pass
     

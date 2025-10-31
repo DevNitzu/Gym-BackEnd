@@ -91,11 +91,3 @@ class EmpleadoService:
     async def get_all_empleados(self) -> List[EmpleadoInDB]:
         empleados_db = await self.empleado_repository.get_all()
         return [EmpleadoInDB.model_validate(emp) for emp in empleados_db]
-    
-    async def get_all_empleados_by_empresa(self,id_empresa: int) -> List[EmpleadoInDB]:
-        empleados_db = await self.empleado_repository.get_all_by_empresa(id_empresa)
-        return [EmpleadoInDB.model_validate(emp) for emp in empleados_db]
-    
-    async def get_all_empleados_by_gimnasio(self,id_gimnasio: int) -> List[EmpleadoInDB]:
-        empleados_db = await self.empleado_repository.get_all_by_gimnasio(id_gimnasio)
-        return [EmpleadoInDB.model_validate(emp) for emp in empleados_db]
