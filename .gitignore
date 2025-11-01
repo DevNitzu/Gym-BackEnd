@@ -26,3 +26,5 @@ app/infrastructure/database/repositories/__init__.py
 /app/infrastructure/database/repositories/__pycache__
 app/tests/__init__.py
 .env
+/app/infrastructure/api/web/__pycache__
+/app/application/dto/__pycache__

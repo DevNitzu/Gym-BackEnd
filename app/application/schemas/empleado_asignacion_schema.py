@@ -8,7 +8,7 @@ class EmpleadoAsignacionBase(BaseModel):
     id_gimnasio: int = Field(..., description="ID del empleado")
     id_empleado: int = Field(..., description="ID empleado")
     id_tipo_empleado: int = Field(..., description="ID del tipo empleado")
-    fecha_creacion: datetime = Field(
+    fecha_asignacion: datetime = Field(
         default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
         description="Fecha de creación con zona horaria Guayaquil"
     )

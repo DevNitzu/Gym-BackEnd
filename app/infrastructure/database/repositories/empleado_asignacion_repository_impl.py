@@ -4,6 +4,10 @@ from app.domain.models.empleado_asignacion import EmpleadoAsignacion
 from typing import Optional, List
 from app.domain.repositories.empleado_asignacion_repository import EmpleadoAsignacionRepository
 
+from app.domain.models.empresa import Empresa
+from app.domain.models.gimnasio import Gimnasio
+from app.domain.models.tipo_empleado import TipoEmpleado
+
 class EmpleadoAsignacionRepositoryImpl(EmpleadoAsignacionRepository):
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -44,3 +48,65 @@ class EmpleadoAsignacionRepositoryImpl(EmpleadoAsignacionRepository):
             select(EmpleadoAsignacion).where(EmpleadoAsignacion.activo == True)
         )
         return result.scalars().all()
+    
+    # Auxiliares DTO
+
+    async def get_all_empleados_asignaciones_by_empresa(self, id_empresa: int):
+        stmt = (
+            select(
+                EmpleadoAsignacion.id_empleado,
+                EmpleadoAsignacion.id_empresa,
+                Empresa.nombre.label("nombre_empresa"),
+                EmpleadoAsignacion.id_gimnasio,
+                Gimnasio.nombre.label("nombre_gimnasio"),
+                EmpleadoAsignacion.id_tipo_empleado,
+                TipoEmpleado.nombre.label("tipo_empleado_nombre"),
+                EmpleadoAsignacion.activo
+            )
+            .join(Empresa, EmpleadoAsignacion.id_empresa == Empresa.id_empresa)
+            .join(Gimnasio, EmpleadoAsignacion.id_gimnasio == Gimnasio.id_gimnasio)
+            .join(TipoEmpleado, EmpleadoAsignacion.id_tipo_empleado == TipoEmpleado.id_tipo_empleado)
+            .where(EmpleadoAsignacion.id_empresa == id_empresa, EmpleadoAsignacion.activo == True)
+        )
+        result = await self.db.execute(stmt)
+        return result.all()
+    
+    async def get_all_empleados_asignaciones_by_gimnasio(self, id_gimnasio: int) -> List[EmpleadoAsignacion]:
+        stmt = (
+            select(
+                EmpleadoAsignacion.id_empleado,
+                EmpleadoAsignacion.id_empresa,
+                Empresa.nombre.label("nombre_empresa"),
+                EmpleadoAsignacion.id_gimnasio,
+                Gimnasio.nombre.label("nombre_gimnasio"),
+                EmpleadoAsignacion.id_tipo_empleado,
+                TipoEmpleado.nombre.label("tipo_empleado_nombre"),
+                EmpleadoAsignacion.activo
+            )
+            .join(Empresa, EmpleadoAsignacion.id_empresa == Empresa.id_empresa)
+            .join(Gimnasio, EmpleadoAsignacion.id_gimnasio == Gimnasio.id_gimnasio)
+            .join(TipoEmpleado, EmpleadoAsignacion.id_tipo_empleado == TipoEmpleado.id_tipo_empleado)
+            .where(EmpleadoAsignacion.id_gimnasio == id_gimnasio, EmpleadoAsignacion.activo == True)
+        )
+        result = await self.db.execute(stmt)
+        return result.all()
+    
+    async def get_empleado_asignacion_info(self, id_empleado: int) -> List[EmpleadoAsignacion]:
+        stmt = (
+            select(
+                EmpleadoAsignacion.id_empleado,
+                EmpleadoAsignacion.id_empresa,
+                Empresa.nombre.label("nombre_empresa"),
+                EmpleadoAsignacion.id_gimnasio,
+                Gimnasio.nombre.label("nombre_gimnasio"),
+                EmpleadoAsignacion.id_tipo_empleado,
+                TipoEmpleado.nombre.label("tipo_empleado_nombre"),
+                EmpleadoAsignacion.activo
+            )
+            .join(Empresa, EmpleadoAsignacion.id_empresa == Empresa.id_empresa)
+            .join(Gimnasio, EmpleadoAsignacion.id_gimnasio == Gimnasio.id_gimnasio)
+            .join(TipoEmpleado, EmpleadoAsignacion.id_tipo_empleado == TipoEmpleado.id_tipo_empleado)
+            .where(EmpleadoAsignacion.id_empleado == id_empleado, EmpleadoAsignacion.activo == True)
+        )
+        result = await self.db.execute(stmt)
+        return result.all()

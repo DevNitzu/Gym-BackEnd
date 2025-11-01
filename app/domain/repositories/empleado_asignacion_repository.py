@@ -22,3 +22,15 @@ class EmpleadoAsignacionRepository(ABC):
     @abstractmethod
     async def get_all(self) -> List[EmpleadoAsignacion]:
         pass
+
+    @abstractmethod
+    async def get_all_empleados_asignaciones_by_empresa(self, id_empresa: int) -> List[EmpleadoAsignacion]:
+        pass
+
+    @abstractmethod
+    async def get_all_empleados_asignaciones_by_gimnasio(self, id_gimnasio: int) -> List[EmpleadoAsignacion]:
+        pass
+
+    @abstractmethod
+    async def get_empleado_asignacion_info(self, id_empleado: int) -> List[EmpleadoAsignacion]:
+        pass

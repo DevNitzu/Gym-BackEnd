@@ -13,7 +13,7 @@ def get_empleado_asignacion_service(db: AsyncSession = Depends(get_db)) -> Emple
     empleado_asignacion_repository = EmpleadoAsignacionRepositoryImpl(db)
     return EmpleadoAsignacionService(empleado_asignacion_repository)
 
-@router.post("/empleado_asignacions", response_model=EmpleadoAsignacionResponse)
+@router.post("/empleado_asignacion", response_model=EmpleadoAsignacionResponse)
 @public_endpoint
 async def create_empleado_asignacion(
     request: Request,
@@ -25,7 +25,7 @@ async def create_empleado_asignacion(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/empleado_asignacions", response_model=List[EmpleadoAsignacionResponse])
+@router.get("/empleado_asignacion", response_model=List[EmpleadoAsignacionResponse])
 @public_endpoint
 async def get_all_empleados_asignacion(
     request: Request,
@@ -33,7 +33,7 @@ async def get_all_empleados_asignacion(
 ):
     return await empleado_asignacion_service.get_all_empleados_asignacion()
 
-@router.get("/empleado_asignacions/{id_empleado_asignacion}", response_model=EmpleadoAsignacionResponse)
+@router.get("/empleado_asignacion/{id_empleado_asignacion}", response_model=EmpleadoAsignacionResponse)
 @public_endpoint
 async def get_empleado_asignacion(
     request: Request,
@@ -45,7 +45,7 @@ async def get_empleado_asignacion(
         raise HTTPException(status_code=404, detail="Tipo Empleado no encontrado")
     return empleado_asignacion
 
-@router.put("/empleado_asignacions/{id_empleado_asignacion}", response_model=EmpleadoAsignacionResponse)
+@router.put("/empleado_asignacion/{id_empleado_asignacion}", response_model=EmpleadoAsignacionResponse)
 @public_endpoint
 async def update_empleado_asignacion(
     request: Request,
@@ -61,7 +61,7 @@ async def update_empleado_asignacion(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.delete("/empleado_asignacions/{id_empleado_asignacion}")
+@router.delete("/empleado_asignacion/{id_empleado_asignacion}")
 @public_endpoint
 async def delete_empleado_asignacion(
     request: Request,
