@@ -44,3 +44,15 @@ class MembresiaRepositoryImpl(MembresiaRepository):
             select(Membresia).where(Membresia.activo == True, Membresia.id_gimnasio == id_gimnasio)
         )
         return result.scalars().all()
+    
+    # Jobs
+
+    async def expire_membresias(self, current_date) -> int:
+        result = await self.db.execute(
+            select(Membresia).where(Membresia.fecha_expiracion < current_date, Membresia.activo == True, Membresia.expirado == False)
+        )
+        expired_membresias = result.scalars().all()
+        for membresia in expired_membresias:
+            membresia.expirado = True
+        await self.db.commit()
+        return len(expired_membresias)

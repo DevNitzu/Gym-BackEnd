@@ -3,6 +3,7 @@ from app.application.schemas.membresia_schema import MembresiaBase, MembresiaUpd
 from typing import Optional, List
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 class MembresiaService:
     def __init__(self, membresia_repository: MembresiaRepository):
@@ -64,3 +65,10 @@ class MembresiaService:
     async def get_all_membresias(self, id_gimnasio: int) -> List[MembresiaInDB]:
         membresias_db = await self.membresia_repository.get_all(id_gimnasio)
         return [MembresiaInDB.model_validate(m) for m in membresias_db]
+    
+    # Jobs
+
+    async def expire_membresias(self) -> int:
+        current_date = datetime.now(ZoneInfo("America/Guayaquil"))
+        expired_count = await self.membresia_repository.expire_membresias(current_date)
+        return expired_count

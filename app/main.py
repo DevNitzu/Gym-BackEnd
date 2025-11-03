@@ -6,6 +6,7 @@ from app.infrastructure.api.web import clientes, modulos, empresas, gimnasios, t
 from app.core.base import Base, engine
 from app.core.rate_limiter import init_rate_limiter
 from app.core.cloudinary_init import init_cloudinary
+from app.infrastructure.scheduler.scheduler import start_scheduler
 
 # Crear la app
 app = FastAPI(
@@ -35,6 +36,7 @@ async def startup():
     # Base.metadata.create_all(bind=engine)
     
     # Inicializar rate limiter
+    start_scheduler()
     await init_rate_limiter()
 
 # Health check de la DB

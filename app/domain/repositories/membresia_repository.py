@@ -22,3 +22,13 @@ class MembresiaRepository(ABC):
     @abstractmethod
     async def get_all(self, id_gimnasio: int) -> List[Membresia]:
         pass
+
+    @abstractmethod
+    async def get_all(self, id_gimnasio: int) -> List[Membresia]:
+        pass
+
+    # Jobs
+
+    @abstractmethod
+    async def expire_membresias(self, current_date) -> int:
+        pass
