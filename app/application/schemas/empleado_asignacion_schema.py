@@ -22,6 +22,7 @@ class EmpleadoAsignacionUpdate(BaseModel):
 class EmpleadoAsignacionInDB(EmpleadoAsignacionBase):
     id_empleado_asignacion: int
     activo: bool
+    pertenece_empresa: bool
 
     class Config:
         from_attributes = True

@@ -10,6 +10,7 @@ class AsignacionDetalle(BaseModel):
     id_tipo_empleado: Optional[int] = None
     tipo_empleado_nombre: Optional[str] = None
     activo: Optional[bool] = True
+    pertenece_empresa: Optional[bool] = True
 
 class EmpleadoDTO(BaseModel):
     empleado: EmpleadoInDB

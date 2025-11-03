@@ -40,6 +40,7 @@ class EmpleadoDTOService:
                     id_tipo_empleado=a.id_tipo_empleado,
                     tipo_empleado_nombre=a.tipo_empleado_nombre,
                     activo=a.activo,
+                    pertenece_empresa=a.pertenece_empresa,
                 )
             )
 
@@ -72,6 +73,7 @@ class EmpleadoDTOService:
                     id_tipo_empleado=a.id_tipo_empleado,
                     tipo_empleado_nombre=a.tipo_empleado_nombre,
                     activo=a.activo,
+                    pertenece_empresa=a.pertenece_empresa,
                 )
             )
 
@@ -96,6 +98,7 @@ class EmpleadoDTOService:
                 id_tipo_empleado=a.id_tipo_empleado,
                 tipo_empleado_nombre=a.tipo_empleado_nombre,
                 activo=a.activo,
+                pertenece_empresa=a.pertenece_empresa,
             )
             for a in asignaciones
         ]

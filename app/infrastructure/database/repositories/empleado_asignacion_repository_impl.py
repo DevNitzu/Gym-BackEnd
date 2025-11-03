@@ -61,12 +61,13 @@ class EmpleadoAsignacionRepositoryImpl(EmpleadoAsignacionRepository):
                 Gimnasio.nombre.label("nombre_gimnasio"),
                 EmpleadoAsignacion.id_tipo_empleado,
                 TipoEmpleado.nombre.label("tipo_empleado_nombre"),
-                EmpleadoAsignacion.activo
+                EmpleadoAsignacion.activo,
+                EmpleadoAsignacion.pertenece_empresa,
             )
             .join(Empresa, EmpleadoAsignacion.id_empresa == Empresa.id_empresa)
             .join(Gimnasio, EmpleadoAsignacion.id_gimnasio == Gimnasio.id_gimnasio)
             .join(TipoEmpleado, EmpleadoAsignacion.id_tipo_empleado == TipoEmpleado.id_tipo_empleado)
-            .where(EmpleadoAsignacion.id_empresa == id_empresa, EmpleadoAsignacion.activo == True)
+            .where(EmpleadoAsignacion.id_empresa == id_empresa, EmpleadoAsignacion.pertenece_empresa == True)
         )
         result = await self.db.execute(stmt)
         return result.all()
@@ -81,12 +82,13 @@ class EmpleadoAsignacionRepositoryImpl(EmpleadoAsignacionRepository):
                 Gimnasio.nombre.label("nombre_gimnasio"),
                 EmpleadoAsignacion.id_tipo_empleado,
                 TipoEmpleado.nombre.label("tipo_empleado_nombre"),
-                EmpleadoAsignacion.activo
+                EmpleadoAsignacion.activo,
+                EmpleadoAsignacion.pertenece_empresa,
             )
             .join(Empresa, EmpleadoAsignacion.id_empresa == Empresa.id_empresa)
             .join(Gimnasio, EmpleadoAsignacion.id_gimnasio == Gimnasio.id_gimnasio)
             .join(TipoEmpleado, EmpleadoAsignacion.id_tipo_empleado == TipoEmpleado.id_tipo_empleado)
-            .where(EmpleadoAsignacion.id_gimnasio == id_gimnasio, EmpleadoAsignacion.activo == True)
+            .where(EmpleadoAsignacion.id_gimnasio == id_gimnasio, EmpleadoAsignacion.pertenece_empresa == True)
         )
         result = await self.db.execute(stmt)
         return result.all()
@@ -101,12 +103,13 @@ class EmpleadoAsignacionRepositoryImpl(EmpleadoAsignacionRepository):
                 Gimnasio.nombre.label("nombre_gimnasio"),
                 EmpleadoAsignacion.id_tipo_empleado,
                 TipoEmpleado.nombre.label("tipo_empleado_nombre"),
-                EmpleadoAsignacion.activo
+                EmpleadoAsignacion.activo,
+                EmpleadoAsignacion.pertenece_empresa,
             )
             .join(Empresa, EmpleadoAsignacion.id_empresa == Empresa.id_empresa)
             .join(Gimnasio, EmpleadoAsignacion.id_gimnasio == Gimnasio.id_gimnasio)
             .join(TipoEmpleado, EmpleadoAsignacion.id_tipo_empleado == TipoEmpleado.id_tipo_empleado)
-            .where(EmpleadoAsignacion.id_empleado == id_empleado, EmpleadoAsignacion.activo == True)
+            .where(EmpleadoAsignacion.id_empleado == id_empleado, EmpleadoAsignacion.pertenece_empresa == True)
         )
         result = await self.db.execute(stmt)
         return result.all()

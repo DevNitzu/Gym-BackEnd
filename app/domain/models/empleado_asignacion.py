@@ -9,5 +9,6 @@ class EmpleadoAsignacion(Base):
     id_gimnasio = Column(Integer, ForeignKey("gimnasios.id_gimnasio"), nullable=True)
     id_empleado = Column(Integer, ForeignKey("empleados.id_empleado"), nullable=True)
     id_tipo_empleado = Column(Integer, ForeignKey("tipos_empleado.id_tipo_empleado"), nullable=True)
+    pertenece_empresa = Column(Boolean, default=True)
     activo = Column(Boolean, default=True)
     fecha_asignacion = Column(TIMESTAMP, server_default=func.now(), nullable=False)
