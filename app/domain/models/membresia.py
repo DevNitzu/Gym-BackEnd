@@ -22,3 +22,4 @@ class Membresia(Base):
     fecha_expiracion = Column(TIMESTAMP(timezone=True), nullable=False)
     renovable = Column(Boolean, default=True)
     activo = Column(Boolean, default=True)
+    expirado = Column(Boolean, default=False)

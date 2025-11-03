@@ -41,6 +41,7 @@ class MembresiaUpdate(BaseModel):
 class MembresiaInDB(MembresiaBase):
     id_membresia: int
     activo: bool = Field(True, description="Indica si la membresía está activa")
+    expirado: bool = Field(False, description="Indica si la membresía está activa")
     
     class Config:
         from_attributes = True
