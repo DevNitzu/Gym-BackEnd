@@ -10,7 +10,7 @@ class MembresiaService:
         self.membresia_repository = membresia_repository
 
     # Funciones privadas para cálculos
-    def _calcular_fecha_expiracion(fecha_inicio: datetime, unidad: str, cantidad: int) -> datetime:
+    def _calcular_fecha_expiracion(self, fecha_inicio: datetime, unidad: str, cantidad: int) -> datetime:
         if unidad == "mes":
             return fecha_inicio + relativedelta(months=cantidad)
         elif unidad == "año":
