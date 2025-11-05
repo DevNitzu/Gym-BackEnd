@@ -77,7 +77,7 @@ async def delete_membresia(
 
 @router.get("/membresias/active_count/gimnasio/{id_gimnasio}")
 @public_endpoint
-async def get_count_active_membresias_by_gimnasio(
+async def get_count_membresias_by_gimnasio(
     request: Request,
     id_gimnasio: int,
     membresia_service: MembresiaService = Depends(get_membresia_service)

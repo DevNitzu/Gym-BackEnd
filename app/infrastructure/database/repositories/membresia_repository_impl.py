@@ -59,9 +59,9 @@ class MembresiaRepositoryImpl(MembresiaRepository):
 
     # Report
 
-    async def get_count_active_membresias_by_gimnasio(self, id_gimnasio: int) -> int:
+    async def get_count_membresias_by_gimnasio(self, id_gimnasio: int) -> int:
         result = await self.db.execute(
-            select(Membresia).where(Membresia.id_gimnasio == id_gimnasio, Membresia.activo == True, Membresia.expirado == False)
+            select(Membresia).where(Membresia.id_gimnasio == id_gimnasio, Membresia.activo == True)
         )
         active_membresias = result.scalars().all()
         return len(active_membresias)
