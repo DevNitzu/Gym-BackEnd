@@ -32,3 +32,9 @@ class MembresiaRepository(ABC):
     @abstractmethod
     async def expire_membresias(self, current_date) -> int:
         pass
+    
+    # Report
+
+    @abstractmethod
+    async def get_count_active_membresias_by_gimnasio(self, id_gimnasio: int) -> int:
+        pass

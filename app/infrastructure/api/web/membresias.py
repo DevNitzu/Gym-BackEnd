@@ -74,3 +74,13 @@ async def delete_membresia(
     if not success:
         raise HTTPException(status_code=404, detail="Membresia no encontrado")
     return {"message": "Membresia eliminada exitosamente"}
+
+@router.get("/membresias/active_count/gimnasio/{id_gimnasio}")
+@public_endpoint
+async def get_count_active_membresias_by_gimnasio(
+    request: Request,
+    id_gimnasio: int,
+    membresia_service: MembresiaService = Depends(get_membresia_service)
+):
+    count = await membresia_service.get_count_active_membresias_by_gimnasio(id_gimnasio)
+    return {"active_membresias_count": count}

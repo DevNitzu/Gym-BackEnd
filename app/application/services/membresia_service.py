@@ -66,6 +66,12 @@ class MembresiaService:
         membresias_db = await self.membresia_repository.get_all(id_gimnasio)
         return [MembresiaInDB.model_validate(m) for m in membresias_db]
     
+    # Extra
+
+    async def get_count_active_membresias_by_gimnasio(self, id_gimnasio: int) -> int:
+        count = await self.membresia_repository.get_count_active_membresias_by_gimnasio(id_gimnasio)
+        return count
+
     # Jobs
 
     async def expire_membresias(self) -> int:
