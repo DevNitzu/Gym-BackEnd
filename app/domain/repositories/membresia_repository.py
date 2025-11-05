@@ -38,3 +38,7 @@ class MembresiaRepository(ABC):
     @abstractmethod
     async def get_count_active_membresias_by_gimnasio(self, id_gimnasio: int) -> int:
         pass
+
+    @abstractmethod
+    async def get_count_clientes_membresia_by_gimnasio(self, id_gimnasio: int) -> int:
+        pass

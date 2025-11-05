@@ -65,3 +65,15 @@ class MembresiaRepositoryImpl(MembresiaRepository):
         )
         active_membresias = result.scalars().all()
         return len(active_membresias)
+    
+    async def get_count_clientes_membresia_by_gimnasio(self, id_gimnasio: int) -> int:
+        result = await self.db.execute(
+            select(Membresia).where(
+                Membresia.id_gimnasio == id_gimnasio,
+                Membresia.activo == True
+            )
+        )
+        membresias = result.scalars().all()
+
+        clientes_unicos = {m.id_cliente for m in membresias}
+        return len(clientes_unicos)

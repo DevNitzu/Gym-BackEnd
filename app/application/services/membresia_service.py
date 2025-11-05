@@ -71,6 +71,10 @@ class MembresiaService:
     async def get_count_active_membresias_by_gimnasio(self, id_gimnasio: int) -> int:
         count = await self.membresia_repository.get_count_active_membresias_by_gimnasio(id_gimnasio)
         return count
+    
+    async def get_count_clientes_membresia_by_gimnasio(self, id_gimnasio: int) -> int:
+        count = await self.membresia_repository.get_count_clientes_membresia_by_gimnasio(id_gimnasio)
+        return count
 
     # Jobs
 
