@@ -70,7 +70,8 @@ class MembresiaRepositoryImpl(MembresiaRepository):
         result = await self.db.execute(
             select(Membresia).where(
                 Membresia.id_gimnasio == id_gimnasio,
-                Membresia.activo == True
+                Membresia.activo == True,
+                Membresia.expirado == False
             )
         )
         membresias = result.scalars().all()
