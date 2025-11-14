@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from app.core.config import settings
-from app.infrastructure.api.web import clientes, modulos, empresas, gimnasios, tipos_empleado, empleados, horarios_gimnasio, precio_membresia, estados_pago, metodo_pago, membresias, empleados_asignacion, asistencias, empleados_dto
+from app.infrastructure.api.web import clientes, modulos, empresas, gimnasios, tipos_empleado, empleados, horarios_gimnasio, precio_membresia, estados_pago, metodo_pago, membresias, empleados_asignacion, asistencias, empleados_dto, medidas_corporales
 from app.core.base import Base, engine
 from app.core.rate_limiter import init_rate_limiter
 from app.core.cloudinary_init import init_cloudinary
@@ -67,6 +67,7 @@ app.include_router(membresias.router, prefix="/api/v1", tags=["membresias"])
 app.include_router(membresias.router, prefix="/api/v1", tags=["membresias"])
 app.include_router(empleados_asignacion.router, prefix="/api/v1", tags=["empleados_asignacion"])
 app.include_router(asistencias.router, prefix="/api/v1", tags=["asistencias"])
+app.include_router(medidas_corporales.router, prefix="/api/v1", tags=["medidas_corporales"])
 # DTOs
 app.include_router(empleados_dto.router, prefix="/api/v1", tags=["empleados_dto"])
 # Endpoint raíz
