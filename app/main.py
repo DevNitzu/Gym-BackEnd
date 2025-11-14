@@ -64,7 +64,6 @@ app.include_router(precio_membresia.router, prefix="/api/v1", tags=["precio_memb
 app.include_router(estados_pago.router, prefix="/api/v1", tags=["estados_pago"])
 app.include_router(metodo_pago.router, prefix="/api/v1", tags=["metodo_pago"])
 app.include_router(membresias.router, prefix="/api/v1", tags=["membresias"])
-app.include_router(membresias.router, prefix="/api/v1", tags=["membresias"])
 app.include_router(empleados_asignacion.router, prefix="/api/v1", tags=["empleados_asignacion"])
 app.include_router(asistencias.router, prefix="/api/v1", tags=["asistencias"])
 app.include_router(medidas_corporales.router, prefix="/api/v1", tags=["medidas_corporales"])

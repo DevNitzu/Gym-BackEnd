@@ -1,5 +1,5 @@
 from app.domain.repositories.medida_corporal_repository import MedidaCorporalRepository
-from app.application.schemas.medida_corporal_schema import MedidasCorporalesBase, MedidaCorporalUpdate, MedidaCorporalInDB
+from app.application.schemas.medida_corporal_schema import MedidaCorporalBase, MedidaCorporalUpdate, MedidaCorporalInDB
 from app.core.security import get_password_hash, verify_password, create_access_token
 from datetime import timedelta
 from app.core.config import settings
@@ -10,7 +10,7 @@ class MedidaCorporalService:
         self.medida_corporal_repository = medida_corporal_repository
 
 
-    async def create_medida_corporal(self, medida_corporal_data: MedidasCorporalesBase) -> MedidaCorporalInDB:
+    async def create_medida_corporal(self, medida_corporal_data: MedidaCorporalBase) -> MedidaCorporalInDB:
         medida_corporal_dict = medida_corporal_data.model_dump()
         medida_corporal_db = await self.medida_corporal_repository.create(medida_corporal_dict)
 
