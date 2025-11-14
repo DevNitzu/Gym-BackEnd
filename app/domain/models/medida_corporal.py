@@ -21,6 +21,5 @@ class MedidaCorporal(Base):
     peso = Column(Float, nullable=True)
     altura = Column(Float, nullable=True)
     musculo = Column(Float, nullable=True)
-    notas_adicionales = Column(String(500), nullable=True)
     activo = Column(Boolean, default=True)
     fecha_creacion = Column(TIMESTAMP, server_default=func.now(), nullable=False)

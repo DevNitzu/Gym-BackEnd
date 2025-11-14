@@ -19,7 +19,6 @@ class MedidaCorporalBase(BaseModel):
     peso: Optional[float] = None
     altura: Optional[float] = None
     musculo: Optional[float] = None
-    notas_adicionales: Optional[str] = Field(None, max_length=500)
     fecha_creacion: datetime = Field(
         default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
         description="Fecha de creación con zona horaria Guayaquil"
@@ -41,7 +40,6 @@ class MedidaCorporalUpdate(BaseModel):
     peso: Optional[float] = None
     altura: Optional[float] = None
     musculo: Optional[float] = None
-    notas_adicionales: Optional[str] = Field(None, max_length=500)
     fecha_creacion: Optional[datetime] = None
 
 class MedidaCorporalInDB(MedidaCorporalBase):
