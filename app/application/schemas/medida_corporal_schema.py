@@ -4,6 +4,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 
 class MedidaCorporalBase(BaseModel):
+    id_cliente: int = Field(..., description="ID del cliente")
     cuello: Optional[float] = None
     bicep_izquierdo: Optional[float] = None
     bicep_derecho: Optional[float] = None
@@ -25,6 +26,7 @@ class MedidaCorporalBase(BaseModel):
     )
 
 class MedidaCorporalUpdate(BaseModel):
+    id_cliente: Optional[int] = None
     cuello: Optional[float] = None
     bicep_izquierdo: Optional[float] = None
     bicep_derecho: Optional[float] = None
@@ -44,7 +46,6 @@ class MedidaCorporalUpdate(BaseModel):
 
 class MedidaCorporalInDB(MedidaCorporalBase):
     id_medida_corporal: int
-    id_cliente: int
 
     class Config:
         from_attributes = True
