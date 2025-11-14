@@ -10,6 +10,8 @@ class ClienteBase(BaseModel):
     cedula: str = Field(..., min_length=5, max_length=20)
     correo: EmailStr
     telefono: str = Field(..., min_length=7, max_length=15)
+    genero: bool = Field(..., description="True para masculino, False para femenino")
+    fecha_nacimiento: datetime = Field(None, description="Fecha de nacimiento del cliente")
     fecha_creacion: datetime = Field(
         default_factory=lambda: datetime.now(ZoneInfo("America/Guayaquil")),
         description="Fecha de creación con zona horaria Guayaquil"
@@ -25,6 +27,8 @@ class ClienteUpdate(BaseModel):
     correo: Optional[EmailStr] = None
     telefono: Optional[str] = Field(..., min_length=7, max_length=15)
     contrasena: Optional[str] = Field(None, min_length=6, max_length=100)
+    genero: Optional[bool] = None
+    fecha_generacion: Optional[datetime] = None
     fecha_creacion: Optional[datetime] = None
 
 class ClienteInDB(ClienteBase):

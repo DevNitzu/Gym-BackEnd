@@ -12,4 +12,6 @@ class Cliente(Base):
     contrasena = Column(String(100), nullable=False)
     telefono = Column(String(100), nullable=False)
     activo = Column(Boolean, default=True)
+    genero = Column(Boolean, default=True) # True para masculino, False para femenino
+    fecha_nacimiento = Column(TIMESTAMP, nullable=True)
     fecha_creacion = Column(TIMESTAMP, server_default=func.now(), nullable=False)
