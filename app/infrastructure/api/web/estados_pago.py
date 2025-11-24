@@ -3,7 +3,7 @@ from app.application.services.estado_pago_service import EstadoPagoService
 from app.infrastructure.database.repositories.estado_pago_repository_impl import EstadoPagoRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.estado_pago_schema import EstadoPagoBase, EstadoPagoUpdate, EstadoPagoResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_estado_pago_service(db: AsyncSession = Depends(get_db)) -> EstadoPagoSer
     return EstadoPagoService(estado_pago_repository)
 
 @router.post("/estado_pagos", response_model=EstadoPagoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_estado_pago(
     request: Request,
     estado_pago_data: EstadoPagoBase,
@@ -27,7 +28,8 @@ async def create_estado_pago(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/estado_pagos", response_model=List[EstadoPagoResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_estado_pagos(
     request: Request,
     estado_pago_service: EstadoPagoService = Depends(get_estado_pago_service)
@@ -35,7 +37,8 @@ async def get_all_estado_pagos(
     return await estado_pago_service.get_all_estado_pagos()
 
 @router.get("/estado_pagos/{id_estado_pago}", response_model=EstadoPagoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_estado_pago(
     request: Request,
     id_estado_pago: int,
@@ -47,7 +50,8 @@ async def get_estado_pago(
     return estado_pago
 
 @router.put("/estado_pagos/{id_estado_pago}", response_model=EstadoPagoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_estado_pago(
     request: Request,
     id_estado_pago: int,
@@ -63,7 +67,8 @@ async def update_estado_pago(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/estado_pagos/{id_estado_pago}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_estado_pago(
     request: Request,
     id_estado_pago: int,

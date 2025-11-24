@@ -3,7 +3,7 @@ from app.application.services.empresa_service import EmpresaService
 from app.infrastructure.database.repositories.empresa_repository_impl import EmpresaRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.empresa_schema import EmpresaBase, EmpresaUpdate, EmpresaResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_empresa_service(db: AsyncSession = Depends(get_db)) -> EmpresaService:
     return EmpresaService(empresa_repository)
 
 @router.post("/empresas", response_model=EmpresaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_empresa(
     request: Request,
     empresa_data: EmpresaBase,
@@ -27,7 +28,8 @@ async def create_empresa(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/empresas", response_model=List[EmpresaResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_empresas(
     request: Request,
     empresa_service: EmpresaService = Depends(get_empresa_service)
@@ -35,7 +37,8 @@ async def get_all_empresas(
     return await empresa_service.get_all_empresas()
 
 @router.get("/empresas/{id_empresa}", response_model=EmpresaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_empresa(
     request: Request,
     id_empresa: int,
@@ -47,7 +50,8 @@ async def get_empresa(
     return empresa
 
 @router.put("/empresas/{id_empresa}", response_model=EmpresaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_empresa(
     request: Request,
     id_empresa: int,
@@ -63,7 +67,8 @@ async def update_empresa(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/empresas/{id_empresa}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_empresa(
     request: Request,
     id_empresa: int,
@@ -75,6 +80,8 @@ async def delete_empresa(
     return {"message": "Empresa eliminada exitosamente"}
 
 @router.put("/empresas/logo/{id_empresa}", response_model=EmpresaResponse)
+@auth_required
+@user_type_required("empleado")
 async def update_empresa_logo(
     id_empresa: int,
     logo_file: UploadFile = File(...),

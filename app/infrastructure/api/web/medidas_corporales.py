@@ -3,7 +3,7 @@ from app.application.services.medida_corporal_service import MedidaCorporalServi
 from app.infrastructure.database.repositories.medida_corporal_repository_impl import MedidaCorporalRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.medida_corporal_schema import MedidaCorporalBase, MedidaCorporalUpdate, MedidaCorporalResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_medida_corporal_service(db: AsyncSession = Depends(get_db)) -> MedidaCor
     return MedidaCorporalService(medida_corporal_repository)
 
 @router.post("/medidas_corporales", response_model=MedidaCorporalResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_medida_corporal(
     request: Request,
     medida_corporal_data: MedidaCorporalBase,
@@ -27,7 +28,8 @@ async def create_medida_corporal(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/medidas_corporales/", response_model=List[MedidaCorporalResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_medidas_corporales(
     request: Request,
     id_empresa: int,
@@ -36,7 +38,8 @@ async def get_all_medidas_corporales(
     return await medida_corporal_service.get_all_medida_corporals(id_empresa)
 
 @router.get("/medidas_corporales/{id_medida_corporal}", response_model=MedidaCorporalResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_medida_corporal(
     request: Request,
     id_medida_corporal: int,
@@ -48,7 +51,8 @@ async def get_medida_corporal(
     return medida_corporal
 
 @router.put("/medidas_corporales/{id_medida_corporal}", response_model=MedidaCorporalResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_medida_corporal(
     request: Request,
     id_medida_corporal: int,
@@ -64,7 +68,8 @@ async def update_medida_corporal(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/medidas_corporales/{id_medida_corporal}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_medida_corporal(
     request: Request,
     id_medida_corporal: int,
@@ -77,7 +82,8 @@ async def delete_medida_corporal(
 
 
 @router.get("/medidas_corporales/historico/cliente/{id_cliente}", response_model=List[MedidaCorporalResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_medidas_corporales_by_cliente(
     request: Request,
     id_cliente: int,
@@ -86,7 +92,8 @@ async def get_all_medidas_corporales_by_cliente(
     return await medida_corporal_service.get_all_medidas_coporales_by_cliente(id_cliente)
 
 @router.get("/medidas_corporales/cliente/{id_cliente}", response_model=List[MedidaCorporalResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_last_medida_corporal_by_cliente(
     request: Request,
     id_cliente: int,

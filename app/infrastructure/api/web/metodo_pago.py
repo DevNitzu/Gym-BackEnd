@@ -3,7 +3,7 @@ from app.application.services.metodo_pago_service import MetodoPagoService
 from app.infrastructure.database.repositories.metodo_pago_repository_impl import MetodoPagoRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.metodo_pago_schema import MetodoPagoBase, MetodoPagoUpdate, MetodoPagoResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_metodo_pago_service(db: AsyncSession = Depends(get_db)) -> MetodoPagoSer
     return MetodoPagoService(metodo_pago_repository)
 
 @router.post("/metodo_pagos", response_model=MetodoPagoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_metodo_pago(
     request: Request,
     metodo_pago_data: MetodoPagoBase,
@@ -27,7 +28,8 @@ async def create_metodo_pago(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/metodo_pagos", response_model=List[MetodoPagoResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_metodo_pagos(
     request: Request,
     metodo_pago_service: MetodoPagoService = Depends(get_metodo_pago_service)
@@ -35,7 +37,8 @@ async def get_all_metodo_pagos(
     return await metodo_pago_service.get_all_metodo_pagos()
 
 @router.get("/metodo_pagos/{id_metodo_pago}", response_model=MetodoPagoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_metodo_pago(
     request: Request,
     id_metodo_pago: int,
@@ -47,7 +50,8 @@ async def get_metodo_pago(
     return metodo_pago
 
 @router.put("/metodo_pagos/{id_metodo_pago}", response_model=MetodoPagoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_metodo_pago(
     request: Request,
     id_metodo_pago: int,
@@ -63,7 +67,8 @@ async def update_metodo_pago(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/metodo_pagos/{id_metodo_pago}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_metodo_pago(
     request: Request,
     id_metodo_pago: int,

@@ -11,19 +11,20 @@ def verify_password(plain_password, hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-def create_access_token(data: dict, expires_delta: timedelta = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=settings.access_token_expire_minutes)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
-    return encoded_jwt
+def create_access_token(user_id: int, user_type: str, expires_delta: timedelta = None):
+    to_encode = {
+        "sub": str(user_id),   # ID del usuario
+        "type": user_type,     # "cliente" o "empleado"
+        "exp": datetime.utcnow() + (expires_delta or timedelta(minutes=settings.access_token_expire_minutes))
+    }
+    return jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
+
+
 
 def verify_token(token: str):
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        print("Decoded Payload:", payload)
         return payload
     except JWTError:
         return None

@@ -3,7 +3,7 @@ from app.application.services.modulo_service import ModuloService
 from app.infrastructure.database.repositories.modulo_repository_impl import ModuloRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.modulo_schema import ModuloBase, ModuloUpdate, ModuloResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,7 +16,8 @@ def get_modulo_service(db: AsyncSession = Depends(get_db)) -> ModuloService:
 
 # Crear módulo
 @router.post("/modulos", response_model=ModuloResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_modulo(
     request: Request,
     modulo_data: ModuloBase,
@@ -29,7 +30,8 @@ async def create_modulo(
 
 # Obtener todos los módulos
 @router.get("/modulos", response_model=List[ModuloResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_modulos(
     request: Request,
     modulo_service: ModuloService = Depends(get_modulo_service)
@@ -38,7 +40,8 @@ async def get_all_modulos(
 
 # Obtener módulo por ID
 @router.get("/modulos/{id_modulo}", response_model=ModuloResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_modulo(
     request: Request,
     id_modulo: int,
@@ -51,7 +54,8 @@ async def get_modulo(
 
 # Actualizar módulo
 @router.put("/modulos/{id_modulo}", response_model=ModuloResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_modulo(
     request: Request,
     id_modulo: int,
@@ -68,7 +72,8 @@ async def update_modulo(
 
 # Eliminar módulo (soft delete)
 @router.delete("/modulos/{id_modulo}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_modulo(
     request: Request,
     id_modulo: int,

@@ -3,7 +3,7 @@ from app.application.services.precio_membresia_service import PrecioMembresiaSer
 from app.infrastructure.database.repositories.precio_membresia_repository_impl import PrecioMembresiaRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.precio_membresia_schema import PrecioMembresiaBase, PrecioMembresiaUpdate, PrecioMembresiaResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_precio_membresia_service(db: AsyncSession = Depends(get_db)) -> PrecioMe
     return PrecioMembresiaService(precio_membresia_repository)
 
 @router.post("/precio_membresias", response_model=PrecioMembresiaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_precio_membresia(
     request: Request,
     precio_membresia_data: PrecioMembresiaBase,
@@ -27,7 +28,8 @@ async def create_precio_membresia(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/precio_membresias/gimnasio/{id_gimnasio}", response_model=List[PrecioMembresiaResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_precio_membresias(
     request: Request,
     id_gimnasio: int,
@@ -36,7 +38,8 @@ async def get_all_precio_membresias(
     return await precio_membresia_service.get_all_precio_membresias(id_gimnasio)
 
 @router.get("/precio_membresias/{id_precio_membresia}", response_model=PrecioMembresiaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_precio_membresia(
     request: Request,
     id_precio_membresia: int,
@@ -48,7 +51,8 @@ async def get_precio_membresia(
     return precio_membresia
 
 @router.put("/precio_membresias/{id_precio_membresia}", response_model=PrecioMembresiaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_precio_membresia(
     request: Request,
     id_precio_membresia: int,
@@ -64,7 +68,8 @@ async def update_precio_membresia(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/precio_membresias/{id_precio_membresia}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_precio_membresia(
     request: Request,
     id_precio_membresia: int,

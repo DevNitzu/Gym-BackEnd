@@ -3,7 +3,7 @@ from app.application.services.tipo_empleado_service import TipoEmpleadoService
 from app.infrastructure.database.repositories.tipo_empleado_repository_impl import TipoEmpleadoRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.tipo_empleado_schema import TipoEmpleadoBase, TipoEmpleadoUpdate, TipoEmpleadoResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,7 +16,8 @@ def get_tipo_empleado_service(db: AsyncSession = Depends(get_db)) -> TipoEmplead
 
 # Crear módulo
 @router.post("/tipo_empleados", response_model=TipoEmpleadoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_tipo_empleado(
     request: Request,
     tipo_empleado_data: TipoEmpleadoBase,
@@ -29,7 +30,8 @@ async def create_tipo_empleado(
 
 # Obtener todos los módulos
 @router.get("/tipo_empleados", response_model=List[TipoEmpleadoResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_tipo_empleados(
     request: Request,
     tipo_empleado_service: TipoEmpleadoService = Depends(get_tipo_empleado_service)
@@ -38,7 +40,8 @@ async def get_all_tipo_empleados(
 
 # Obtener módulo por ID
 @router.get("/tipo_empleados/{id_tipo_empleado}", response_model=TipoEmpleadoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_tipo_empleado(
     request: Request,
     id_tipo_empleado: int,
@@ -51,7 +54,8 @@ async def get_tipo_empleado(
 
 # Actualizar módulo
 @router.put("/tipo_empleados/{id_tipo_empleado}", response_model=TipoEmpleadoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_tipo_empleado(
     request: Request,
     id_tipo_empleado: int,
@@ -68,7 +72,8 @@ async def update_tipo_empleado(
 
 # Eliminar módulo (soft delete)
 @router.delete("/tipo_empleados/{id_tipo_empleado}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_tipo_empleado(
     request: Request,
     id_tipo_empleado: int,

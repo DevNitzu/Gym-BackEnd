@@ -43,10 +43,8 @@ class ClienteService:
         if not cliente.activo:
             raise ValueError("Cuenta inhabilitada")
 
-        access_token = create_access_token(
-            data={"sub": cliente.correo},
-            expires_delta=timedelta(minutes=settings.access_token_expire_minutes)
-        )
+        access_token = create_access_token(user_id=cliente.id_cliente,user_type="cliente")
+        
 
         return {"access_token": access_token, "token_type": "bearer"}
 

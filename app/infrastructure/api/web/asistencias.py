@@ -3,7 +3,7 @@ from app.application.services.asistencia_service import AsistenciaService
 from app.infrastructure.database.repositories.asistencia_repository_impl import AsistenciaRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.asistencia_schema import AsistenciaBase, AsistenciaUpdate, AsistenciaResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required,user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_asistencia_service(db: AsyncSession = Depends(get_db)) -> AsistenciaServ
     return AsistenciaService(asistencia_repository)
 
 @router.post("/asistencias", response_model=AsistenciaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_asistencia(
     request: Request,
     asistencia_data: AsistenciaBase,
@@ -27,7 +28,8 @@ async def create_asistencia(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/asistencias", response_model=List[AsistenciaResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_asistencias(
     request: Request,
     asistencia_service: AsistenciaService = Depends(get_asistencia_service)
@@ -35,7 +37,8 @@ async def get_all_asistencias(
     return await asistencia_service.get_all_asistencias()
 
 @router.get("/asistencias/{id_asistencia}", response_model=AsistenciaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_asistencia(
     request: Request,
     id_asistencia: int,
@@ -47,7 +50,8 @@ async def get_asistencia(
     return asistencia
 
 @router.put("/asistencias/{id_asistencia}", response_model=AsistenciaResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_asistencia(
     request: Request,
     id_asistencia: int,
@@ -63,7 +67,8 @@ async def update_asistencia(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/asistencias/{id_asistencia}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_asistencia(
     request: Request,
     id_asistencia: int,
@@ -75,6 +80,8 @@ async def delete_asistencia(
     return {"message": "Asistencia eliminada exitosamente"}
 
 @router.put("/asistencias/logo/{id_asistencia}", response_model=AsistenciaResponse)
+@auth_required
+@user_type_required("empleado")
 async def update_asistencia_logo(
     id_asistencia: int,
     logo_file: UploadFile = File(...),

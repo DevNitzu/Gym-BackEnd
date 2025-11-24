@@ -6,7 +6,7 @@ from app.infrastructure.database.repositories.empleado_repository_impl import Em
 from app.application.schemas.empleado_schema import (
     EmpleadoCreate, EmpleadoUpdate, EmpleadoResponse, LoginRequest, Token
 )
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required,user_type_required
 from typing import List
 
 router = APIRouter()
@@ -16,7 +16,8 @@ def get_empleado_service(db: AsyncSession = Depends(get_db)) -> EmpleadoService:
     return EmpleadoService(empleado_repository)
 
 @router.post("/empleados/auth", response_model=Token)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def login(
     request: Request,
     login_data: LoginRequest,
@@ -28,7 +29,8 @@ async def login(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.post("/empleados", response_model=EmpleadoResponse)
-@private_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_empleado(
     request: Request,
     empleado_data: EmpleadoCreate,
@@ -40,7 +42,8 @@ async def create_empleado(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/empleados", response_model=List[EmpleadoResponse])
-@private_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_empleados(
     request: Request,
     empleado_service: EmpleadoService = Depends(get_empleado_service)
@@ -48,7 +51,8 @@ async def get_all_empleados(
     return await empleado_service.get_all_empleados()
 
 @router.get("/empleados/{id_empleado}", response_model=EmpleadoResponse)
-@private_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_empleado(
     request: Request,
     id_empleado: int,
@@ -60,7 +64,8 @@ async def get_empleado(
     return empleado
 
 @router.put("/empleados/{id_empleado}", response_model=EmpleadoResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_empleado(
     request: Request,
     id_empleado: int,
@@ -73,7 +78,8 @@ async def update_empleado(
     return empleado
 
 @router.delete("/empleados/{id_empleado}")
-@private_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_empleado(
     request: Request,
     id_empleado: int,

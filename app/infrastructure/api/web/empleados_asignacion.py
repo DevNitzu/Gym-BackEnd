@@ -3,7 +3,7 @@ from app.application.services.empleado_asignacion_service import EmpleadoAsignac
 from app.infrastructure.database.repositories.empleado_asignacion_repository_impl import EmpleadoAsignacionRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.empleado_asignacion_schema import EmpleadoAsignacionBase, EmpleadoAsignacionUpdate, EmpleadoAsignacionResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -14,7 +14,8 @@ def get_empleado_asignacion_service(db: AsyncSession = Depends(get_db)) -> Emple
     return EmpleadoAsignacionService(empleado_asignacion_repository)
 
 @router.post("/empleado_asignacion", response_model=EmpleadoAsignacionResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_empleado_asignacion(
     request: Request,
     empleado_asignacion_data: EmpleadoAsignacionBase,
@@ -26,7 +27,8 @@ async def create_empleado_asignacion(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/empleado_asignacion", response_model=List[EmpleadoAsignacionResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_empleados_asignacion(
     request: Request,
     empleado_asignacion_service: EmpleadoAsignacionService = Depends(get_empleado_asignacion_service)
@@ -34,7 +36,8 @@ async def get_all_empleados_asignacion(
     return await empleado_asignacion_service.get_all_empleados_asignacion()
 
 @router.get("/empleado_asignacion/{id_empleado_asignacion}", response_model=EmpleadoAsignacionResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_empleado_asignacion(
     request: Request,
     id_empleado_asignacion: int,
@@ -46,7 +49,8 @@ async def get_empleado_asignacion(
     return empleado_asignacion
 
 @router.put("/empleado_asignacion/{id_empleado_asignacion}", response_model=EmpleadoAsignacionResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_empleado_asignacion(
     request: Request,
     id_empleado_asignacion: int,
@@ -62,7 +66,8 @@ async def update_empleado_asignacion(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/empleado_asignacion/{id_empleado_asignacion}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_empleado_asignacion(
     request: Request,
     id_empleado_asignacion: int,

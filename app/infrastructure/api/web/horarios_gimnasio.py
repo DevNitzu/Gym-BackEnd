@@ -3,7 +3,7 @@ from app.application.services.horario_gimnasio_service import HorarioGimnasioSer
 from app.infrastructure.database.repositories.horario_gimnasio_repository_impl import HorarioGimnasioRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.horario_gimnasio_schema import HorarioGimnasioBase, HorarioGimnasioUpdate, HorarioGimnasioResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_horario_gimnasio_service(db: AsyncSession = Depends(get_db)) -> HorarioG
     return HorarioGimnasioService(horario_gimnasio_repository)
 
 @router.post("/horario_gimnasios", response_model=HorarioGimnasioResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_horario_gimnasio(
     request: Request,
     horario_gimnasio_data: HorarioGimnasioBase,
@@ -27,7 +28,8 @@ async def create_horario_gimnasio(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/horario_gimnasios/gimnasio/{id_gimnasio}", response_model=List[HorarioGimnasioResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_horario_gimnasios(
     request: Request,
     id_gimnasio: int,
@@ -36,7 +38,8 @@ async def get_all_horario_gimnasios(
     return await horario_gimnasio_service.get_all_horario_gimnasios(id_gimnasio)
 
 @router.get("/horario_gimnasios/{id_horario_gimnasio}", response_model=HorarioGimnasioResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_horario_gimnasio(
     request: Request,
     id_horario_gimnasio: int,
@@ -48,7 +51,8 @@ async def get_horario_gimnasio(
     return horario_gimnasio
 
 @router.put("/horario_gimnasios/{id_horario_gimnasio}", response_model=HorarioGimnasioResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_horario_gimnasio(
     request: Request,
     id_horario_gimnasio: int,
@@ -64,7 +68,8 @@ async def update_horario_gimnasio(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/horario_gimnasios/{id_horario_gimnasio}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_horario_gimnasio(
     request: Request,
     id_horario_gimnasio: int,

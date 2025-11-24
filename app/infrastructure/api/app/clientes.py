@@ -6,7 +6,7 @@ from app.infrastructure.database.repositories.cliente_repository_impl import Cli
 from app.application.schemas.cliente_schema import (
     ClienteCreate, ClienteUpdate, ClienteResponse, LoginRequest, Token
 )
-from app.core.decorators import auth_required, user_type_required
+from app.core.decorators import auth_required, user_type_required, public_endpoint
 from typing import List
 
 router = APIRouter()
@@ -15,9 +15,19 @@ def get_cliente_service(db: AsyncSession = Depends(get_db)) -> ClienteService:
     cliente_repository = ClienteRepositoryImpl(db)
     return ClienteService(cliente_repository)
 
+@router.post("/clientes/auth", response_model=Token)
+@public_endpoint
+async def login(
+    request: Request,
+    login_data: LoginRequest,
+    cliente_service: ClienteService = Depends(get_cliente_service)
+):
+    try:
+        return await cliente_service.authenticate_cliente(login_data)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @router.post("/clientes", response_model=ClienteResponse)
-@auth_required
-@user_type_required("empleado")
 async def create_cliente(
     request: Request,
     cliente_data: ClienteCreate,
@@ -28,51 +38,27 @@ async def create_cliente(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/clientes", response_model=List[ClienteResponse])
+@router.put("/clientes/me", response_model=ClienteResponse)
 @auth_required
-@user_type_required("empleado")
-async def get_all_clientes(
-    request: Request,
-    cliente_service: ClienteService = Depends(get_cliente_service)
-):
-    return await cliente_service.get_all_clientes()
-
-@router.get("/clientes/{id_cliente}", response_model=ClienteResponse)
-@auth_required
-@user_type_required("empleado")
-async def get_cliente(
-    request: Request,
-    id_cliente: int,
-    cliente_service: ClienteService = Depends(get_cliente_service)
-):
-    cliente = await cliente_service.get_cliente(id_cliente)
-    if not cliente:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
-    return cliente
-
-@router.put("/clientes/{id_cliente}", response_model=ClienteResponse)
-@auth_required
-@user_type_required("empleado")
+@user_type_required("cliente")
 async def update_cliente(
     request: Request,
-    id_cliente: int,
     cliente_data: ClienteUpdate,
     cliente_service: ClienteService = Depends(get_cliente_service)
 ):
+    id_cliente = int(request.state.user["sub"])    
     cliente = await cliente_service.update_cliente(id_cliente, cliente_data)
     if not cliente:
         raise HTTPException(status_code=404, detail="Cliente no encontrado")
     return cliente
 
-@router.delete("/clientes/{id_cliente}")
+@router.get("/clientes/me", response_model=ClienteResponse)
 @auth_required
-@user_type_required("empleado")
-async def delete_cliente(
+@user_type_required("cliente")
+async def get_me_cliente(
     request: Request,
-    id_cliente: int,
     cliente_service: ClienteService = Depends(get_cliente_service)
 ):
-    success = await cliente_service.delete_cliente(id_cliente)
-    if not success:
-        raise HTTPException(status_code=404, detail="Cliente no encontrado")
-    return {"message": "Cliente eliminado exitosamente"}
+    
+    id_cliente = int(request.state.user["sub"])  
+    return await cliente_service.get_cliente(id_cliente)

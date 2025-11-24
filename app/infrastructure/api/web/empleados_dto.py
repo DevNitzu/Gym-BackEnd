@@ -6,6 +6,7 @@ from app.infrastructure.database.repositories.empleado_repository_impl import Em
 from app.infrastructure.database.repositories.empleado_asignacion_repository_impl import EmpleadoAsignacionRepositoryImpl
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.base import get_db
+from app.core.decorators import auth_required, user_type_required
 
 router = APIRouter()
 
@@ -16,6 +17,8 @@ def get_empleado_info_service(db: AsyncSession = Depends(get_db)) -> EmpleadoDTO
 
 
 @router.get("/empleadodto/empresa/{id_empresa}", response_model=EmpleadoAsignacionInfoResponse)
+@auth_required
+@user_type_required("empleado")
 async def get_empleados_por_empresa(
     id_empresa: int,
     service: EmpleadoDTOService = Depends(get_empleado_info_service)
@@ -25,6 +28,8 @@ async def get_empleados_por_empresa(
 
 
 @router.get("/empleadodto/gimnasio/{id_gimnasio}", response_model=EmpleadoAsignacionInfoResponse)
+@auth_required
+@user_type_required("empleado")
 async def get_empleados_por_gimnasio(
     id_gimnasio: int,
     service: EmpleadoDTOService = Depends(get_empleado_info_service)
@@ -34,6 +39,8 @@ async def get_empleados_por_gimnasio(
 
 
 @router.get("/empleadodto/empleado/{id_empleado}", response_model=EmpleadoDTO)
+@auth_required
+@user_type_required("empleado")
 async def get_empleado_info(
     id_empleado: int,
     service: EmpleadoDTOService = Depends(get_empleado_info_service)

@@ -3,7 +3,7 @@ from app.application.services.gimnasio_service import GimnasioService
 from app.infrastructure.database.repositories.gimnasio_repository_impl import GimnasioRepositoryImpl
 from app.core.base import get_db
 from app.application.schemas.gimnasio_schema import GimnasioBase, GimnasioUpdate, GimnasioResponse
-from app.core.decorators import public_endpoint, private_endpoint
+from app.core.decorators import auth_required, user_type_required
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,8 @@ def get_gimnasio_service(db: AsyncSession = Depends(get_db)) -> GimnasioService:
     return GimnasioService(gimnasio_repository)
 
 @router.post("/gimnasios", response_model=GimnasioResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def create_gimnasio(
     request: Request,
     gimnasio_data: GimnasioBase,
@@ -27,7 +28,8 @@ async def create_gimnasio(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get("/gimnasios/{id_empresa}", response_model=List[GimnasioResponse])
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_all_gimnasios(
     request: Request,
     id_empresa: int,
@@ -36,7 +38,8 @@ async def get_all_gimnasios(
     return await gimnasio_service.get_all_gimnasios(id_empresa)
 
 @router.get("/gimnasios/{id_gimnasio}", response_model=GimnasioResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def get_gimnasio(
     request: Request,
     id_gimnasio: int,
@@ -48,7 +51,8 @@ async def get_gimnasio(
     return gimnasio
 
 @router.put("/gimnasios/{id_gimnasio}", response_model=GimnasioResponse)
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def update_gimnasio(
     request: Request,
     id_gimnasio: int,
@@ -64,7 +68,8 @@ async def update_gimnasio(
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/gimnasios/{id_gimnasio}")
-@public_endpoint
+@auth_required
+@user_type_required("empleado")
 async def delete_gimnasio(
     request: Request,
     id_gimnasio: int,
