@@ -16,8 +16,6 @@ def get_empleado_service(db: AsyncSession = Depends(get_db)) -> EmpleadoService:
     return EmpleadoService(empleado_repository)
 
 @router.post("/empleados/auth", response_model=Token)
-@auth_required
-@user_type_required("empleado")
 async def login(
     request: Request,
     login_data: LoginRequest,
