@@ -8,75 +8,77 @@ security = HTTPBearer()
 
 
 # ======================================================
-# 1. Decorador para endpoints públicos (solo rate-limit)
+# 1. ENDPOINT PÚBLICO (rate-limit)
 # ======================================================
 def public_endpoint(func):
     @wraps(func)
-    async def wrapper(request: Request, *args, **kwargs):
+    async def wrapper(*args, **kwargs):
+        # Obtener request sin alterar la firma
+        request: Request = kwargs.get("request") or args[0]
 
-        # Proteccion DDoS / Rate-limit opcional
         try:
             await rate_limiter.check_rate_limit(request)
         except Exception as e:
             print(f"[RateLimit] {e}")
 
-        return await func(request, *args, **kwargs)
+        return await func(*args, **kwargs)
 
     return wrapper
 
 
 # ======================================================
-# 2. JWT obligatorio: verify_token() + payload en request
+# 2. JWT obligatorio
 # ======================================================
 def auth_required(func):
     @wraps(func)
-    async def wrapper(request: Request, *args, **kwargs):
+    async def wrapper(*args, **kwargs):
+        request: Request = kwargs.get("request") or args[0]
 
-        # Rate-limit opcional
+        # rate limit
         try:
             await rate_limiter.check_rate_limit(request)
         except Exception as e:
             print(f"[RateLimit] {e}")
 
-        # Extraer header Authorization
+        # Auth Bearer
         try:
             credentials: HTTPAuthorizationCredentials = await security(request)
             token = credentials.credentials
         except Exception:
             raise HTTPException(status_code=401, detail="Token requerido")
 
-        # Verificar token y decodificar
         payload = verify_token(token)
         if not payload:
             raise HTTPException(status_code=401, detail="Token inválido")
 
-        # Guardar payload para siguientes decoradores
         request.state.user = payload
 
-        return await func(request, *args, **kwargs)
+        return await func(*args, **kwargs)
 
     return wrapper
 
 
 # ======================================================
-# 3. Validar tipo de usuario dentro del token: cliente / empleado
+# 3. Validación del tipo de usuario
 # ======================================================
 def user_type_required(user_type: str):
     def decorator(func):
         @wraps(func)
-        async def wrapper(request: Request, *args, **kwargs):
+        async def wrapper(*args, **kwargs):
+            request: Request = kwargs.get("request") or args[0]
 
             payload = getattr(request.state, "user", None)
             if not payload:
                 raise HTTPException(401, "Token inválido o faltante")
+
             print("User Type in Payload:", payload.get("type"))
+
             if payload.get("type") != user_type:
                 raise HTTPException(
                     status_code=403,
                     detail=f"Este endpoint es solo para {user_type}s"
                 )
 
-            return await func(request, *args, **kwargs)
-
+            return await func(*args, **kwargs)
         return wrapper
     return decorator
