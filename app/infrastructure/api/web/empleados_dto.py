@@ -20,6 +20,7 @@ def get_empleado_info_service(db: AsyncSession = Depends(get_db)) -> EmpleadoDTO
 @auth_required
 @user_type_required("empleado")
 async def get_empleados_por_empresa(
+    request: Request,
     id_empresa: int,
     service: EmpleadoDTOService = Depends(get_empleado_info_service)
 ):
@@ -31,6 +32,7 @@ async def get_empleados_por_empresa(
 @auth_required
 @user_type_required("empleado")
 async def get_empleados_por_gimnasio(
+    request: Request,
     id_gimnasio: int,
     service: EmpleadoDTOService = Depends(get_empleado_info_service)
 ):
@@ -42,6 +44,7 @@ async def get_empleados_por_gimnasio(
 @auth_required
 @user_type_required("empleado")
 async def get_empleado_info(
+    request: Request,
     id_empleado: int,
     service: EmpleadoDTOService = Depends(get_empleado_info_service)
 ):
